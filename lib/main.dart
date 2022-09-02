@@ -1,5 +1,8 @@
+import 'package:dicoding_restaurant_app/data/restaurant.dart';
+import 'package:dicoding_restaurant_app/detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:dicoding_restaurant_app/main_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const RestaurantApp());
@@ -12,7 +15,21 @@ class RestaurantApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Restaurant App",
-      home: MainPage(),
+      theme: ThemeData(
+        primarySwatch: Colors.brown,
+        scaffoldBackgroundColor: Colors.brown.shade100,
+        textTheme: TextTheme(
+          bodyMedium: GoogleFonts.notoSans(),
+        ),
+      ),
+      initialRoute: MainPage.route,
+      routes: {
+        MainPage.route: (context) => MainPage(),
+        DetailPage.route: (context) => DetailPage(
+              restaurantDetail: ModalRoute.of(context)?.settings.arguments
+                  as RestaurantDetail,
+            ),
+      },
     );
   }
 }
