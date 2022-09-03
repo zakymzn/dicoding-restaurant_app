@@ -24,8 +24,11 @@ class DetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image(
-              image: NetworkImage(restaurantDetail.pictureId),
+            Hero(
+              tag: restaurantDetail.id,
+              child: Image(
+                image: NetworkImage(restaurantDetail.pictureId),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(10),
@@ -41,7 +44,7 @@ class DetailPage extends StatelessWidget {
                           Text(
                             restaurantDetail.name,
                             style: TextStyle(
-                              fontSize: 32,
+                              fontSize: 24,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -49,43 +52,205 @@ class DetailPage extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.place,
-                                size: 18,
+                                size: 16,
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 5),
                                 child: Text(
                                   restaurantDetail.city,
-                                  style: TextStyle(fontSize: 18),
+                                  style: TextStyle(fontSize: 16),
                                 ),
                               ),
                             ],
                           )
                         ],
                       ),
-                      IconButton(onPressed: () {}, icon: Icon(Icons.favorite))
+                      FavoriteButton(),
                     ],
                   ),
-                  Align(
-                    alignment: Alignment(-1, 0),
-                    child: Text(
-                      'Deskripsi',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                  SizedBox(
+                    height: 10,
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment(-1, 0),
+                              child: Text(
+                                'Deskripsi',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              restaurantDetail.description,
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                  Text(
-                    restaurantDetail.description,
-                    textAlign: TextAlign.justify,
-                    style: TextStyle(fontSize: 16),
-                  )
+                  SizedBox(
+                    height: 10,
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment(-1, 0),
+                              child: Text(
+                                'Menu',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Align(
+                              alignment: Alignment(-1, 0),
+                              child: Text(
+                                'Makanan',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            SizedBox(
+                              height: 50,
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: restaurantDetail.menus.foods
+                                    .map((foodMenu) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: Container(
+                                        height: 100,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        color: Colors.brown.shade200,
+                                        child: Align(
+                                          alignment: Alignment(0, 0),
+                                          child: Text(
+                                            foodMenu['name'].toString(),
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Align(
+                              alignment: Alignment(-1, 0),
+                              child: Text(
+                                'Minuman',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            SizedBox(
+                              height: 50,
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: restaurantDetail.menus.drinks
+                                    .map((drinkMenu) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: Container(
+                                        height: 100,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        color: Colors.brown.shade200,
+                                        child: Align(
+                                          alignment: Alignment(0, 0),
+                                          child: Text(
+                                            drinkMenu['name'].toString(),
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class FavoriteButton extends StatefulWidget {
+  const FavoriteButton({super.key});
+
+  @override
+  State<FavoriteButton> createState() => _FavoriteButtonState();
+}
+
+class _FavoriteButtonState extends State<FavoriteButton> {
+  bool isFavorited = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () => setState(() {
+        isFavorited = !isFavorited;
+      }),
+      icon: Icon(isFavorited ? Icons.favorite : Icons.favorite_border),
     );
   }
 }

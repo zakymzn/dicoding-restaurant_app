@@ -2,8 +2,6 @@ import 'package:dicoding_restaurant_app/detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:dicoding_restaurant_app/data/restaurant.dart';
 import 'dart:convert';
-import 'dart:async';
-import 'package:flutter/services.dart';
 
 class MainPage extends StatefulWidget {
   static const route = '/main_page';
@@ -15,6 +13,19 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  TextEditingController textEditingController = TextEditingController();
+  List<RestaurantDetail> restaurantDetail = [];
+  // late List<RestaurantDetail> restaurantDetail;
+  late List<RestaurantDetail> restaurantSuggestions;
+  String query = '';
+
+  @override
+  void initState() {
+    super.initState();
+
+    restaurantSuggestions = restaurantDetail;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +35,7 @@ class _MainPageState extends State<MainPage> {
             SliverAppBar(
               pinned: true,
               expandedHeight: 200,
+              elevation: 2,
               flexibleSpace: FlexibleSpaceBar(
                 background: Image.asset(
                   "images/large_compressed.jpg",
@@ -35,6 +47,38 @@ class _MainPageState extends State<MainPage> {
                 titlePadding: const EdgeInsets.fromLTRB(20, 0, 0, 20),
               ),
             ),
+            SliverAppBar(
+              pinned: true,
+              backgroundColor: Colors.brown.shade100,
+              elevation: 0,
+              title: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  color: Colors.brown.shade200,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: TextField(
+                    controller: textEditingController,
+                    decoration: InputDecoration(
+                      hintText: 'Cari restoran',
+                      hintStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      suffixIcon: Icon(
+                        Icons.search,
+                        color: Colors.white,
+                      ),
+                    ),
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            )
           ];
         },
         body: FutureBuilder(
@@ -73,18 +117,21 @@ class _MainPageState extends State<MainPage> {
             child: Container(
               color: Colors.white,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(10),
                 child: Row(
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(right: 5),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        child: Image(
-                          image: NetworkImage(restaurantDetail.pictureId),
-                          fit: BoxFit.cover,
-                          width: 100,
-                          height: 80,
+                        child: Hero(
+                          tag: restaurantDetail.id,
+                          child: Image(
+                            image: NetworkImage(restaurantDetail.pictureId),
+                            fit: BoxFit.cover,
+                            width: 100,
+                            height: 80,
+                          ),
                         ),
                       ),
                     ),
@@ -145,9 +192,41 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
-}
 
-// final restaurant = restaurantFromJson('assets/local_restaurant.json');
-// void main() {
-//   print(restaurant);
-// }
+  void search(String query) {
+    final List<RestaurantDetail> restaurantDetail = parseRestaurantDetail(json);
+    final restaurantSuggestions = restaurantDetail.where((restaurant) {
+      final restaurantName = restaurant.name.toLowerCase();
+      final restaurantLocation = restaurant.city.toLowerCase();
+      final input = query.toLowerCase();
+
+      return restaurantName.contains(input) ||
+          restaurantLocation.contains(input);
+    }).toList();
+
+    setState(() {
+      this.query = query;
+      this.restaurantSuggestions = restaurantSuggestions;
+    });
+  }
+
+  Route _createSlideTransition(Widget pageTarget, dx, dy, int milliseconds) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => pageTarget,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(dx, dy);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+      transitionDuration: Duration(milliseconds: milliseconds),
+    );
+  }
+}
