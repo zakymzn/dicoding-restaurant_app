@@ -2,6 +2,19 @@ import 'package:dicoding_restaurant_app/detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:dicoding_restaurant_app/data/restaurant.dart';
 import 'dart:convert';
+import 'dart:async';
+import 'package:flutter/services.dart';
+
+Future _loadRestaurantData() async {
+  return await rootBundle.loadString('assets/local_restaurant.json');
+}
+
+Future loadRestaurant() async {
+  String jsonString = await _loadRestaurantData();
+  final jsonResponse = json.decode(jsonString);
+  RestaurantDetail restaurantDetail = RestaurantDetail.fromJson(jsonResponse);
+  return restaurantDetail;
+}
 
 class MainPage extends StatefulWidget {
   static const route = '/main_page';
@@ -14,17 +27,17 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   TextEditingController textEditingController = TextEditingController();
-  List<RestaurantDetail> restaurantDetail = [];
   // late List<RestaurantDetail> restaurantDetail;
   late List<RestaurantDetail> restaurantSuggestions;
   String query = '';
 
-  @override
-  void initState() {
-    super.initState();
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   textEditingController;
 
-    restaurantSuggestions = restaurantDetail;
-  }
+  //   restaurantSuggestions = restaurantDetail;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +88,7 @@ class _MainPageState extends State<MainPage> {
                     style: TextStyle(
                       color: Colors.white,
                     ),
+                    onChanged: search,
                   ),
                 ),
               ),
@@ -110,81 +124,179 @@ class _MainPageState extends State<MainPage> {
           DetailPage.route,
           arguments: restaurantDetail,
         ),
-        child: SizedBox(
-          height: 100,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Container(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 5),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Hero(
-                          tag: restaurantDetail.id,
-                          child: Image(
-                            image: NetworkImage(restaurantDetail.pictureId),
-                            fit: BoxFit.cover,
-                            width: 100,
-                            height: 80,
-                          ),
-                        ),
+        child: LayoutBuilder(builder: (context, constraints) {
+          if (constraints.maxWidth > 600) {
+            return _webDesktopRestaurantList(context, restaurantDetail);
+          } else {
+            return _mobileRestaurantLlist(context, restaurantDetail);
+          }
+        }),
+      ),
+    );
+  }
+
+  Widget _mobileRestaurantLlist(
+      BuildContext context, RestaurantDetail restaurantDetail) {
+    return SizedBox(
+      height: 100,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 5),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Hero(
+                      tag: restaurantDetail.id,
+                      child: Image(
+                        image: NetworkImage(restaurantDetail.pictureId),
+                        fit: BoxFit.cover,
+                        width: 100,
+                        height: 80,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 5),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 5),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        restaurantDetail.name,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Row(
                         children: [
-                          Text(
-                            restaurantDetail.name,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                          Padding(
+                            padding: const EdgeInsets.only(right: 5),
+                            child: Icon(
+                              Icons.place,
+                              size: 16,
+                              color: Colors.grey,
                             ),
                           ),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5),
-                                child: Icon(
-                                  Icons.place,
-                                  size: 16,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              Text(
-                                restaurantDetail.city,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 5),
-                                child: Icon(
-                                  Icons.star,
-                                  size: 16,
-                                  color: Colors.orangeAccent,
-                                ),
-                              ),
-                              Text(restaurantDetail.rating.toString()),
-                            ],
+                          Text(
+                            restaurantDetail.city,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ],
                       ),
-                    )
-                  ],
-                ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(right: 5),
+                            child: Icon(
+                              Icons.star,
+                              size: 16,
+                              color: Colors.orangeAccent,
+                            ),
+                          ),
+                          Text(restaurantDetail.rating.toString()),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _webDesktopRestaurantList(
+      BuildContext context, RestaurantDetail restaurantDetail) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 5),
+      child: SizedBox(
+        height: 100,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Hero(
+                        tag: restaurantDetail.id,
+                        child: Image(
+                          image: NetworkImage(restaurantDetail.pictureId),
+                          fit: BoxFit.cover,
+                          width: 100,
+                          height: 80,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          restaurantDetail.name,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 5),
+                              child: Icon(
+                                Icons.place,
+                                size: 16,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            Text(
+                              restaurantDetail.city,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(right: 5),
+                              child: Icon(
+                                Icons.star,
+                                size: 16,
+                                color: Colors.orangeAccent,
+                              ),
+                            ),
+                            Text(restaurantDetail.rating.toString()),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
           ),
