@@ -1,25 +1,13 @@
+import 'dart:async';
+import 'dart:developer' as developer;
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dicoding_restaurant_app/detail_page.dart';
 import 'package:dicoding_restaurant_app/widgets/mobile_restaurant_list_widget.dart';
 import 'package:dicoding_restaurant_app/widgets/search_widget.dart';
 import 'package:dicoding_restaurant_app/widgets/web_desktop_restaurant_list_widget.dart';
-import 'package:flutter/material.dart';
 import 'package:dicoding_restaurant_app/data/restaurant.dart';
-import 'dart:convert';
-import 'dart:async';
-import 'package:flutter/services.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'dart:developer' as developer;
-
-// Future _loadRestaurantData() async {
-//   return await rootBundle.loadString('assets/local_restaurant.json');
-// }
-
-// Future loadRestaurant() async {
-//   String jsonString = await _loadRestaurantData();
-//   final jsonResponse = json.decode(jsonString);
-//   RestaurantDetail restaurantDetail = RestaurantDetail.fromJson(jsonResponse);
-//   return restaurantDetail;
-// }
 
 class MainPage extends StatefulWidget {
   static const route = '/main_page';
@@ -31,29 +19,67 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  // List<RestaurantDetail> restaurantDetail =
-  //     loadRestaurant() as List<RestaurantDetail>;
-  List<RestaurantDetail> restaurantList = [];
-  late List<RestaurantDetail> restaurantSuggestions;
-  // String query = '';
+  List<RestaurantDetail> restaurants = [];
+  String query = '';
 
   ConnectivityResult _connectionStatus = ConnectivityResult.none;
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> subscription;
 
-  Future<void> readJson() async {
-    final String response =
-        await rootBundle.loadString('assets/local_restaurant.json');
-    // final data = await json.decode(response);
-    final Map<String, dynamic> parsedData = jsonDecode(response);
+  Future init() async {
+    final restaurants = await Restaurants.getRestaurants(query);
 
     setState(() {
-      // restaurantList = parsedData['restaurants']
-      //     .map((data) => RestaurantDetail.fromJson(data))
-      //     .toList();
-      List<dynamic> restaurantList = parsedData['restaurants'];
-      restaurantList.map((e) => RestaurantDetail.fromJson(e)).toList();
+      this.restaurants = restaurants;
     });
+  }
+
+  Future searchRestaurant(String query) async {
+    final restaurants = await Restaurants.getRestaurants(query);
+
+    if (!mounted) return;
+
+    setState(() {
+      this.query = query;
+      this.restaurants = restaurants;
+    });
+  }
+
+  Future<void> initConnectivity() async {
+    late ConnectivityResult result;
+
+    try {
+      result = await _connectivity.checkConnectivity();
+    } on PlatformException catch (e) {
+      developer.log('Couldn\'t check connectivity status', error: e);
+    }
+
+    if (!mounted) {
+      return Future.value(null);
+    }
+
+    return _updateConnectionStatus(result);
+  }
+
+  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
+    setState(() {
+      _connectionStatus = result;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initConnectivity();
+    init();
+
+    subscription = Connectivity().onConnectivityChanged.listen((event) {});
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    subscription.cancel();
   }
 
   @override
@@ -79,33 +105,33 @@ class _MainPageState extends State<MainPage> {
                   "images/large_compressed.jpg",
                   fit: BoxFit.cover,
                 ),
-                title: Text(
+                title: const Text(
                   "Restaurant",
                 ),
                 titlePadding: const EdgeInsets.fromLTRB(20, 0, 0, 20),
               ),
             ),
             SliverAppBar(
-                pinned: true,
-                backgroundColor: Colors.brown.shade100,
-                elevation: 0,
-                title: _buildSearchWidget(context))
+              pinned: true,
+              backgroundColor: Colors.brown.shade100,
+              elevation: 0,
+              title: _buildSearchWidget(context),
+            ),
           ];
         },
-        body: FutureBuilder(
-          future: DefaultAssetBundle.of(context)
-              .loadString('assets/local_restaurant.json'),
-          builder: <String>(context, snapshot) {
-            final List<RestaurantDetail> restaurantDetail =
-                parseRestaurantDetail(snapshot.data);
+        body: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: restaurants.length,
+                itemBuilder: (context, index) {
+                  final restaurant = restaurants[index];
 
-            return ListView.builder(
-              itemCount: restaurantDetail.length,
-              itemBuilder: (context, index) {
-                return _buildRestaurantItem(context, restaurantDetail[index]);
-              },
-            );
-          },
+                  return _buildRestaurantItem(context, restaurant);
+                },
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -118,13 +144,13 @@ class _MainPageState extends State<MainPage> {
           height: 200,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Icon(
                 Icons.signal_cellular_connected_no_internet_0_bar,
                 size: 50,
               ),
               Padding(
-                padding: const EdgeInsets.all(10),
+                padding: EdgeInsets.all(10),
                 child: Text(
                   'Anda tidak terhubung ke internet\nPeriksa koneksi internet Anda!',
                   textAlign: TextAlign.center,
@@ -139,7 +165,7 @@ class _MainPageState extends State<MainPage> {
 
   Widget _buildSearchWidget(BuildContext context) {
     return SearchWidget(
-      onChanged: (value) {},
+      onChanged: searchRestaurant,
     );
   }
 
@@ -184,58 +210,5 @@ class _MainPageState extends State<MainPage> {
       restaurantLocation: restaurantDetail,
       restaurantRating: restaurantDetail,
     );
-  }
-
-  void search(String query) {
-    final restaurantSuggestions = restaurantList.where((restaurant) {
-      final restaurantName = restaurant.name.toLowerCase();
-      final restaurantLocation = restaurant.city.toLowerCase();
-      final input = query.toLowerCase();
-
-      return restaurantName.contains(input) ||
-          restaurantLocation.contains(input);
-    }).toList();
-
-    setState(() {
-      restaurantList = restaurantSuggestions;
-    });
-  }
-
-  Future<void> initConnectivity() async {
-    late ConnectivityResult result;
-
-    try {
-      result = await _connectivity.checkConnectivity();
-    } on PlatformException catch (e) {
-      developer.log('Couldn\'t check connectivity status', error: e);
-    }
-
-    if (!mounted) {
-      return Future.value(null);
-    }
-
-    return _updateConnectionStatus(result);
-  }
-
-  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
-    setState(() {
-      _connectionStatus = result;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    initConnectivity();
-    readJson();
-
-    subscription = Connectivity().onConnectivityChanged.listen((event) {});
-    // restaurantSuggestions = restaurantList;
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    subscription.cancel();
   }
 }

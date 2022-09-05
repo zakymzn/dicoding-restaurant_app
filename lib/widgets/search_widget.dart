@@ -22,7 +22,7 @@ class _SearchWidgetState extends State<SearchWidget> {
         padding: const EdgeInsets.only(left: 15),
         child: TextField(
           controller: textEditingController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: 'Cari restoran',
             hintStyle: TextStyle(
               color: Colors.white,
@@ -34,7 +34,7 @@ class _SearchWidgetState extends State<SearchWidget> {
               color: Colors.white,
             ),
           ),
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
           ),
           onChanged: widget.onChanged,

@@ -1,5 +1,5 @@
-import 'package:dicoding_restaurant_app/data/restaurant.dart';
 import 'package:flutter/material.dart';
+import 'package:dicoding_restaurant_app/data/restaurant.dart';
 
 class WebDesktopRestaurantListWidget extends StatefulWidget {
   final RestaurantDetail restaurantID;
@@ -63,15 +63,15 @@ class _WebDesktopRestaurantListWidgetState
                       children: [
                         Text(
                           widget.restaurantName.name,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Row(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 5),
+                            const Padding(
+                              padding: EdgeInsets.only(right: 5),
                               child: Icon(
                                 Icons.place,
                                 size: 16,
@@ -80,7 +80,7 @@ class _WebDesktopRestaurantListWidgetState
                             ),
                             Text(
                               widget.restaurantLocation.city,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -89,7 +89,7 @@ class _WebDesktopRestaurantListWidgetState
                         ),
                         Row(
                           children: [
-                            Padding(
+                            const Padding(
                               padding: EdgeInsets.only(right: 5),
                               child: Icon(
                                 Icons.star,
@@ -110,6 +110,5 @@ class _WebDesktopRestaurantListWidgetState
         ),
       ),
     );
-    ;
   }
 }

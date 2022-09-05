@@ -1,8 +1,6 @@
-import 'dart:ui';
-
+import 'package:flutter/material.dart';
 import 'package:dicoding_restaurant_app/data/restaurant.dart';
 import 'package:dicoding_restaurant_app/detail_page.dart';
-import 'package:flutter/material.dart';
 
 class WebDesktopDetailPageWidget extends StatelessWidget {
   final RestaurantDetail restaurantID;
@@ -38,7 +36,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
               child: Hero(
                 tag: restaurantID.id,
                 child: Padding(
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image(
@@ -64,14 +62,14 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                             children: [
                               Text(
                                 restaurantName.name,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Row(
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.place,
                                     size: 16,
                                   ),
@@ -79,17 +77,17 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                     padding: const EdgeInsets.only(left: 5),
                                     child: Text(
                                       restaurantLocation.city,
-                                      style: TextStyle(fontSize: 16),
+                                      style: const TextStyle(fontSize: 16),
                                     ),
                                   ),
                                 ],
                               )
                             ],
                           ),
-                          FavoriteButton(),
+                          const FavoriteButton(),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       ClipRRect(
@@ -100,7 +98,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                             padding: const EdgeInsets.all(10),
                             child: Column(
                               children: [
-                                Align(
+                                const Align(
                                   alignment: Alignment(-1, 0),
                                   child: Text(
                                     'Deskripsi',
@@ -110,20 +108,20 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 Text(
                                   restaurantDescription.description,
                                   textAlign: TextAlign.justify,
-                                  style: TextStyle(fontSize: 14),
+                                  style: const TextStyle(fontSize: 14),
                                 ),
                               ],
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       ClipRRect(
@@ -134,7 +132,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                             padding: const EdgeInsets.all(10),
                             child: Column(
                               children: [
-                                Align(
+                                const Align(
                                   alignment: Alignment(-1, 0),
                                   child: Text(
                                     'Menu',
@@ -144,10 +142,10 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
-                                Align(
+                                const Align(
                                   alignment: Alignment(-1, 0),
                                   child: Text(
                                     'Makanan',
@@ -157,7 +155,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 SizedBox(
@@ -176,15 +174,17 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                                 BorderRadius.circular(100),
                                             child: Container(
                                               height: 100,
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 20),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 20),
                                               color: Colors.brown.shade200,
                                               child: Align(
-                                                alignment: Alignment(0, 0),
+                                                alignment:
+                                                    const Alignment(0, 0),
                                                 child: Text(
                                                   foodMenu['name'].toString(),
                                                   textAlign: TextAlign.center,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w600,
                                                   ),
@@ -197,10 +197,10 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
-                                Align(
+                                const Align(
                                   alignment: Alignment(-1, 0),
                                   child: Text(
                                     'Minuman',
@@ -210,7 +210,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 SizedBox(
@@ -229,15 +229,17 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                                 BorderRadius.circular(100),
                                             child: Container(
                                               height: 100,
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 20),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 20),
                                               color: Colors.brown.shade200,
                                               child: Align(
-                                                alignment: Alignment(0, 0),
+                                                alignment:
+                                                    const Alignment(0, 0),
                                                 child: Text(
                                                   drinkMenu['name'].toString(),
                                                   textAlign: TextAlign.center,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w600,
                                                   ),
@@ -264,11 +266,5 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
-}
-
-class MyCustomScrollBehavior extends MaterialScrollBehavior {
-  @override
-  Set<PointerDeviceKind> get dragDevices => {PointerDeviceKind.mouse};
 }

@@ -1,14 +1,15 @@
-import 'package:dicoding_restaurant_app/widgets/mobile_detail_page_widget.dart';
-import 'package:dicoding_restaurant_app/widgets/web_desktop_detail_page_widget.dart';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:dicoding_restaurant_app/data/restaurant.dart';
+import 'package:dicoding_restaurant_app/widgets/mobile_detail_page_widget.dart';
+import 'package:dicoding_restaurant_app/widgets/web_desktop_detail_page_widget.dart';
 
 class DetailPage extends StatelessWidget {
   static const route = '/detail_page';
 
   final RestaurantDetail restaurantDetail;
 
-  DetailPage({super.key, required this.restaurantDetail});
+  const DetailPage({super.key, required this.restaurantDetail});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class DetailPage extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
         ),
         title: Text(restaurantDetail.name),
       ),
@@ -76,4 +77,12 @@ class _FavoriteButtonState extends State<FavoriteButton> {
       icon: Icon(isFavorited ? Icons.favorite : Icons.favorite_border),
     );
   }
+}
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.mouse,
+        PointerDeviceKind.touch,
+      };
 }

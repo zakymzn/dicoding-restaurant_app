@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:dicoding_restaurant_app/data/restaurant.dart';
 import 'package:dicoding_restaurant_app/detail_page.dart';
-import 'package:flutter/material.dart';
 
 class MobileDetailPageWidget extends StatelessWidget {
   final RestaurantDetail restaurantID;
@@ -11,7 +11,9 @@ class MobileDetailPageWidget extends StatelessWidget {
   final RestaurantDetail restaurantRating;
   final RestaurantDetail restaurantMenu;
 
-  const MobileDetailPageWidget({
+  final scrollController = ScrollController();
+
+  MobileDetailPageWidget({
     super.key,
     required this.restaurantID,
     required this.restaurantName,
@@ -47,14 +49,14 @@ class MobileDetailPageWidget extends StatelessWidget {
                       children: [
                         Text(
                           restaurantName.name,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.place,
                               size: 16,
                             ),
@@ -62,17 +64,17 @@ class MobileDetailPageWidget extends StatelessWidget {
                               padding: const EdgeInsets.only(left: 5),
                               child: Text(
                                 restaurantLocation.city,
-                                style: TextStyle(fontSize: 16),
+                                style: const TextStyle(fontSize: 16),
                               ),
                             ),
                           ],
                         )
                       ],
                     ),
-                    FavoriteButton(),
+                    const FavoriteButton(),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 ClipRRect(
@@ -83,7 +85,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                       padding: const EdgeInsets.all(10),
                       child: Column(
                         children: [
-                          Align(
+                          const Align(
                             alignment: Alignment(-1, 0),
                             child: Text(
                               'Deskripsi',
@@ -93,20 +95,20 @@ class MobileDetailPageWidget extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Text(
                             restaurantDescription.description,
                             textAlign: TextAlign.justify,
-                            style: TextStyle(fontSize: 14),
+                            style: const TextStyle(fontSize: 14),
                           ),
                         ],
                       ),
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 ClipRRect(
@@ -117,7 +119,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                       padding: const EdgeInsets.all(10),
                       child: Column(
                         children: [
-                          Align(
+                          const Align(
                             alignment: Alignment(-1, 0),
                             child: Text(
                               'Menu',
@@ -127,10 +129,10 @@ class MobileDetailPageWidget extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
-                          Align(
+                          const Align(
                             alignment: Alignment(-1, 0),
                             child: Text(
                               'Makanan',
@@ -140,45 +142,49 @@ class MobileDetailPageWidget extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           SizedBox(
                             height: 50,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children:
-                                  restaurantMenu.menus.foods.map((foodMenu) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(5),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(100),
-                                    child: Container(
-                                      height: 100,
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 20),
-                                      color: Colors.brown.shade200,
-                                      child: Align(
-                                        alignment: Alignment(0, 0),
-                                        child: Text(
-                                          foodMenu['name'].toString(),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600,
+                            child: ScrollConfiguration(
+                              behavior: MyCustomScrollBehavior(),
+                              child: ListView(
+                                controller: scrollController,
+                                scrollDirection: Axis.horizontal,
+                                children:
+                                    restaurantMenu.menus.foods.map((foodMenu) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: Container(
+                                        height: 100,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        color: Colors.brown.shade200,
+                                        child: Align(
+                                          alignment: const Alignment(0, 0),
+                                          child: Text(
+                                            foodMenu['name'].toString(),
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              }).toList(),
+                                  );
+                                }).toList(),
+                              ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
-                          Align(
+                          const Align(
                             alignment: Alignment(-1, 0),
                             child: Text(
                               'Minuman',
@@ -188,39 +194,43 @@ class MobileDetailPageWidget extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           SizedBox(
                             height: 50,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children:
-                                  restaurantMenu.menus.drinks.map((drinkMenu) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(5),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(100),
-                                    child: Container(
-                                      height: 100,
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 20),
-                                      color: Colors.brown.shade200,
-                                      child: Align(
-                                        alignment: Alignment(0, 0),
-                                        child: Text(
-                                          drinkMenu['name'].toString(),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600,
+                            child: ScrollConfiguration(
+                              behavior: MyCustomScrollBehavior(),
+                              child: ListView(
+                                controller: scrollController,
+                                scrollDirection: Axis.horizontal,
+                                children: restaurantMenu.menus.drinks
+                                    .map((drinkMenu) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: Container(
+                                        height: 100,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        color: Colors.brown.shade200,
+                                        child: Align(
+                                          alignment: const Alignment(0, 0),
+                                          child: Text(
+                                            drinkMenu['name'].toString(),
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              }).toList(),
+                                  );
+                                }).toList(),
+                              ),
                             ),
                           )
                         ],

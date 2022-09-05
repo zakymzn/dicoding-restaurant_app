@@ -1,8 +1,8 @@
-import 'package:dicoding_restaurant_app/data/restaurant.dart';
-import 'package:dicoding_restaurant_app/detail_page.dart';
 import 'package:flutter/material.dart';
-import 'package:dicoding_restaurant_app/main_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:dicoding_restaurant_app/data/restaurant.dart';
+import 'package:dicoding_restaurant_app/main_page.dart';
+import 'package:dicoding_restaurant_app/detail_page.dart';
 
 void main() {
   runApp(const RestaurantApp());
@@ -24,7 +24,7 @@ class RestaurantApp extends StatelessWidget {
       ),
       initialRoute: MainPage.route,
       routes: {
-        MainPage.route: (context) => MainPage(),
+        MainPage.route: (context) => const MainPage(),
         DetailPage.route: (context) => DetailPage(
               restaurantDetail: ModalRoute.of(context)?.settings.arguments
                   as RestaurantDetail,

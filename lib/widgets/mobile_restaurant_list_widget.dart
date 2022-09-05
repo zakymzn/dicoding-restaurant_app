@@ -59,15 +59,15 @@ class _MobileRestaurantListWidgetState
                     children: [
                       Text(
                         widget.restaurantName.name,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Row(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 5),
+                          const Padding(
+                            padding: EdgeInsets.only(right: 5),
                             child: Icon(
                               Icons.place,
                               size: 16,
@@ -76,7 +76,7 @@ class _MobileRestaurantListWidgetState
                           ),
                           Text(
                             widget.restaurantLocation.city,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                             ),
@@ -85,7 +85,7 @@ class _MobileRestaurantListWidgetState
                       ),
                       Row(
                         children: [
-                          Padding(
+                          const Padding(
                             padding: EdgeInsets.only(right: 5),
                             child: Icon(
                               Icons.star,
@@ -105,6 +105,5 @@ class _MobileRestaurantListWidgetState
         ),
       ),
     );
-    ;
   }
 }

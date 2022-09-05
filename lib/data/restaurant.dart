@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/services.dart';
 
 class RestaurantDetail {
   final String id;
@@ -57,12 +58,23 @@ class FoodAndDrink {
       );
 }
 
-List<RestaurantDetail> parseRestaurantDetail(json) {
-  if (json == null) {
-    return [];
-  }
+class Restaurants {
+  static Future<List<RestaurantDetail>> getRestaurants(String query) async {
+    final restaurantData =
+        await rootBundle.loadString('assets/local_restaurant.json');
 
-  final Map<String, dynamic> parsed = jsonDecode(json);
-  List<dynamic> restaurants = parsed['restaurants'];
-  return restaurants.map((json) => RestaurantDetail.fromJson(json)).toList();
+    final Map<String, dynamic> parsed = json.decode(restaurantData);
+    List<dynamic> restaurants = parsed['restaurants'];
+
+    return restaurants
+        .map((json) => RestaurantDetail.fromJson(json))
+        .where((restaurant) {
+      final restaurantName = restaurant.name.toLowerCase();
+      final restaurantLocation = restaurant.city.toLowerCase();
+      final searchValue = query.toLowerCase();
+
+      return restaurantName.contains(searchValue) ||
+          restaurantLocation.contains(searchValue);
+    }).toList();
+  }
 }
