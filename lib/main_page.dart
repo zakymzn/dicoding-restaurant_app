@@ -1,20 +1,25 @@
 import 'package:dicoding_restaurant_app/detail_page.dart';
+import 'package:dicoding_restaurant_app/widgets/mobile_restaurant_list_widget.dart';
+import 'package:dicoding_restaurant_app/widgets/search_widget.dart';
+import 'package:dicoding_restaurant_app/widgets/web_desktop_restaurant_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:dicoding_restaurant_app/data/restaurant.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'dart:developer' as developer;
 
-Future _loadRestaurantData() async {
-  return await rootBundle.loadString('assets/local_restaurant.json');
-}
+// Future _loadRestaurantData() async {
+//   return await rootBundle.loadString('assets/local_restaurant.json');
+// }
 
-Future loadRestaurant() async {
-  String jsonString = await _loadRestaurantData();
-  final jsonResponse = json.decode(jsonString);
-  RestaurantDetail restaurantDetail = RestaurantDetail.fromJson(jsonResponse);
-  return restaurantDetail;
-}
+// Future loadRestaurant() async {
+//   String jsonString = await _loadRestaurantData();
+//   final jsonResponse = json.decode(jsonString);
+//   RestaurantDetail restaurantDetail = RestaurantDetail.fromJson(jsonResponse);
+//   return restaurantDetail;
+// }
 
 class MainPage extends StatefulWidget {
   static const route = '/main_page';
@@ -26,21 +31,41 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  TextEditingController textEditingController = TextEditingController();
-  // late List<RestaurantDetail> restaurantDetail;
+  // List<RestaurantDetail> restaurantDetail =
+  //     loadRestaurant() as List<RestaurantDetail>;
+  List<RestaurantDetail> restaurantList = [];
   late List<RestaurantDetail> restaurantSuggestions;
-  String query = '';
+  // String query = '';
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   textEditingController;
+  ConnectivityResult _connectionStatus = ConnectivityResult.none;
+  final Connectivity _connectivity = Connectivity();
+  late StreamSubscription<ConnectivityResult> subscription;
 
-  //   restaurantSuggestions = restaurantDetail;
-  // }
+  Future<void> readJson() async {
+    final String response =
+        await rootBundle.loadString('assets/local_restaurant.json');
+    // final data = await json.decode(response);
+    final Map<String, dynamic> parsedData = jsonDecode(response);
+
+    setState(() {
+      // restaurantList = parsedData['restaurants']
+      //     .map((data) => RestaurantDetail.fromJson(data))
+      //     .toList();
+      List<dynamic> restaurantList = parsedData['restaurants'];
+      restaurantList.map((e) => RestaurantDetail.fromJson(e)).toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (_connectionStatus != ConnectivityResult.none) {
+      return networkConnected(context);
+    } else {
+      return networkDisconnected(context);
+    }
+  }
+
+  Widget networkConnected(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -61,38 +86,10 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
             SliverAppBar(
-              pinned: true,
-              backgroundColor: Colors.brown.shade100,
-              elevation: 0,
-              title: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  color: Colors.brown.shade200,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: TextField(
-                    controller: textEditingController,
-                    decoration: InputDecoration(
-                      hintText: 'Cari restoran',
-                      hintStyle: TextStyle(
-                        color: Colors.white,
-                      ),
-                      enabledBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      suffixIcon: Icon(
-                        Icons.search,
-                        color: Colors.white,
-                      ),
-                    ),
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                    onChanged: search,
-                  ),
-                ),
-              ),
-            )
+                pinned: true,
+                backgroundColor: Colors.brown.shade100,
+                elevation: 0,
+                title: _buildSearchWidget(context))
           ];
         },
         body: FutureBuilder(
@@ -111,6 +108,38 @@ class _MainPageState extends State<MainPage> {
           },
         ),
       ),
+    );
+  }
+
+  Widget networkDisconnected(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: SizedBox(
+          height: 200,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.signal_cellular_connected_no_internet_0_bar,
+                size: 50,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Text(
+                  'Anda tidak terhubung ke internet\nPeriksa koneksi internet Anda!',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSearchWidget(BuildContext context) {
+    return SearchWidget(
+      onChanged: (value) {},
     );
   }
 
@@ -137,177 +166,28 @@ class _MainPageState extends State<MainPage> {
 
   Widget _mobileRestaurantLlist(
       BuildContext context, RestaurantDetail restaurantDetail) {
-    return SizedBox(
-      height: 100,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 5),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Hero(
-                      tag: restaurantDetail.id,
-                      child: Image(
-                        image: NetworkImage(restaurantDetail.pictureId),
-                        fit: BoxFit.cover,
-                        width: 100,
-                        height: 80,
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 5),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        restaurantDetail.name,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 5),
-                            child: Icon(
-                              Icons.place,
-                              size: 16,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          Text(
-                            restaurantDetail.city,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(right: 5),
-                            child: Icon(
-                              Icons.star,
-                              size: 16,
-                              color: Colors.orangeAccent,
-                            ),
-                          ),
-                          Text(restaurantDetail.rating.toString()),
-                        ],
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
+    return MobileRestaurantListWidget(
+      restaurantID: restaurantDetail,
+      restaurantName: restaurantDetail,
+      restaurantPicture: restaurantDetail,
+      restaurantLocation: restaurantDetail,
+      restaurantRating: restaurantDetail,
     );
   }
 
   Widget _webDesktopRestaurantList(
       BuildContext context, RestaurantDetail restaurantDetail) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / 5),
-      child: SizedBox(
-        height: 100,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Container(
-            color: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 5),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Hero(
-                        tag: restaurantDetail.id,
-                        child: Image(
-                          image: NetworkImage(restaurantDetail.pictureId),
-                          fit: BoxFit.cover,
-                          width: 100,
-                          height: 80,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          restaurantDetail.name,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 5),
-                              child: Icon(
-                                Icons.place,
-                                size: 16,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            Text(
-                              restaurantDetail.city,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(right: 5),
-                              child: Icon(
-                                Icons.star,
-                                size: 16,
-                                color: Colors.orangeAccent,
-                              ),
-                            ),
-                            Text(restaurantDetail.rating.toString()),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+    return WebDesktopRestaurantListWidget(
+      restaurantID: restaurantDetail,
+      restaurantName: restaurantDetail,
+      restaurantPicture: restaurantDetail,
+      restaurantLocation: restaurantDetail,
+      restaurantRating: restaurantDetail,
     );
   }
 
   void search(String query) {
-    final List<RestaurantDetail> restaurantDetail = parseRestaurantDetail(json);
-    final restaurantSuggestions = restaurantDetail.where((restaurant) {
+    final restaurantSuggestions = restaurantList.where((restaurant) {
       final restaurantName = restaurant.name.toLowerCase();
       final restaurantLocation = restaurant.city.toLowerCase();
       final input = query.toLowerCase();
@@ -317,28 +197,45 @@ class _MainPageState extends State<MainPage> {
     }).toList();
 
     setState(() {
-      this.query = query;
-      this.restaurantSuggestions = restaurantSuggestions;
+      restaurantList = restaurantSuggestions;
     });
   }
 
-  Route _createSlideTransition(Widget pageTarget, dx, dy, int milliseconds) {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => pageTarget,
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = Offset(dx, dy);
-        const end = Offset.zero;
-        const curve = Curves.ease;
+  Future<void> initConnectivity() async {
+    late ConnectivityResult result;
 
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+    try {
+      result = await _connectivity.checkConnectivity();
+    } on PlatformException catch (e) {
+      developer.log('Couldn\'t check connectivity status', error: e);
+    }
 
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-      transitionDuration: Duration(milliseconds: milliseconds),
-    );
+    if (!mounted) {
+      return Future.value(null);
+    }
+
+    return _updateConnectionStatus(result);
+  }
+
+  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
+    setState(() {
+      _connectionStatus = result;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initConnectivity();
+    readJson();
+
+    subscription = Connectivity().onConnectivityChanged.listen((event) {});
+    // restaurantSuggestions = restaurantList;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    subscription.cancel();
   }
 }
