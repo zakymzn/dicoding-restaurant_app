@@ -21,7 +21,7 @@ class DetailPage extends StatelessWidget {
           },
           icon: const Icon(Icons.arrow_back),
         ),
-        title: Text(restaurantDetail.restaurant.name),
+        title: Text(restaurantDetail.restaurant.name!),
       ),
       body: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth > 600) {

@@ -44,8 +44,8 @@ class _MobileRestaurantListWidgetState
                     child: Hero(
                       tag: widget.restaurantID.id!,
                       child: Image(
-                        image:
-                            NetworkImage(widget.restaurantPicture.pictureId!),
+                        image: NetworkImage(RestaurantAPI()
+                            .smallImage(widget.restaurantPicture.pictureId)),
                         fit: BoxFit.cover,
                         width: 100,
                         height: 80,

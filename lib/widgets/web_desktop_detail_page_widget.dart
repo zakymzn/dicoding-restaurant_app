@@ -34,14 +34,14 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
           children: [
             Expanded(
               child: Hero(
-                tag: restaurantID.restaurant.id,
+                tag: restaurantID.restaurant.id!,
                 child: Padding(
                   padding: const EdgeInsets.all(5),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image(
                       image:
-                          NetworkImage(restaurantPicture.restaurant.pictureId),
+                          NetworkImage(restaurantPicture.restaurant.pictureId!),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -62,7 +62,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                restaurantName.restaurant.name,
+                                restaurantName.restaurant.name!,
                                 style: const TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
@@ -77,7 +77,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 5),
                                     child: Text(
-                                      restaurantLocation.restaurant.city,
+                                      restaurantLocation.restaurant.city!,
                                       style: const TextStyle(fontSize: 16),
                                     ),
                                   ),
@@ -113,7 +113,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                   height: 10,
                                 ),
                                 Text(
-                                  restaurantDescription.restaurant.description,
+                                  restaurantDescription.restaurant.description!,
                                   textAlign: TextAlign.justify,
                                   style: const TextStyle(fontSize: 14),
                                 ),
@@ -167,7 +167,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                       controller: scrollController,
                                       scrollDirection: Axis.horizontal,
                                       children: restaurantMenu
-                                          .restaurant.menus.foods
+                                          .restaurant.menus!.foods
                                           .map((foodMenu) {
                                         return Padding(
                                           padding: const EdgeInsets.all(5),
@@ -223,7 +223,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                       controller: scrollController,
                                       scrollDirection: Axis.horizontal,
                                       children: restaurantMenu
-                                          .restaurant.menus.drinks
+                                          .restaurant.menus!.drinks
                                           .map((drinkMenu) {
                                         return Padding(
                                           padding: const EdgeInsets.all(5),

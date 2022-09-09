@@ -112,7 +112,6 @@ class _MainPageState extends State<MainPage> {
               );
             } else {
               if (snapshot.hasData) {
-                // return Text(restaurant!.restaurants.map((e) => e.description).toString());
                 return ListView.builder(
                   itemCount: restaurant!.count.toInt(),
                   itemBuilder: (context, index) {

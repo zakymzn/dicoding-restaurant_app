@@ -31,9 +31,9 @@ class MobileDetailPageWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Hero(
-            tag: restaurantID.restaurant.id,
+            tag: restaurantID.restaurant.id!,
             child: Image(
-              image: NetworkImage(restaurantPicture.restaurant.pictureId),
+              image: NetworkImage(restaurantPicture.restaurant.pictureId!),
             ),
           ),
           Padding(
@@ -48,7 +48,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          restaurantName.restaurant.name,
+                          restaurantName.restaurant.name!,
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -63,7 +63,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(left: 5),
                               child: Text(
-                                restaurantLocation.restaurant.city,
+                                restaurantLocation.restaurant.city!,
                                 style: const TextStyle(fontSize: 16),
                               ),
                             ),
@@ -99,7 +99,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                             height: 10,
                           ),
                           Text(
-                            restaurantDescription.restaurant.description,
+                            restaurantDescription.restaurant.description!,
                             textAlign: TextAlign.justify,
                             style: const TextStyle(fontSize: 14),
                           ),
@@ -152,7 +152,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                               child: ListView(
                                 controller: scrollController,
                                 scrollDirection: Axis.horizontal,
-                                children: restaurantMenu.restaurant.menus.foods
+                                children: restaurantMenu.restaurant.menus!.foods
                                     .map((foodMenu) {
                                   return Padding(
                                     padding: const EdgeInsets.all(5),
@@ -204,7 +204,8 @@ class MobileDetailPageWidget extends StatelessWidget {
                               child: ListView(
                                 controller: scrollController,
                                 scrollDirection: Axis.horizontal,
-                                children: restaurantMenu.restaurant.menus.drinks
+                                children: restaurantMenu
+                                    .restaurant.menus!.drinks
                                     .map((drinkMenu) {
                                   return Padding(
                                     padding: const EdgeInsets.all(5),

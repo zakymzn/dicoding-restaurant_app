@@ -47,8 +47,8 @@ class _WebDesktopRestaurantListWidgetState
                       child: Hero(
                         tag: widget.restaurantID.id!,
                         child: Image(
-                          image: NetworkImage(
-                              "https://restaurant-api.dicoding.dev/images/medium/01"),
+                          image: NetworkImage(RestaurantAPI()
+                              .smallImage(widget.restaurantPicture.pictureId)),
                           fit: BoxFit.cover,
                           width: 100,
                           height: 80,
