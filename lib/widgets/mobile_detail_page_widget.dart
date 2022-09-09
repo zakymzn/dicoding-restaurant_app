@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:dicoding_restaurant_app/data/restaurant.dart';
+import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
 import 'package:dicoding_restaurant_app/detail_page.dart';
 
 class MobileDetailPageWidget extends StatelessWidget {
@@ -31,9 +31,9 @@ class MobileDetailPageWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Hero(
-            tag: restaurantID.id,
+            tag: restaurantID.restaurant.id,
             child: Image(
-              image: NetworkImage(restaurantPicture.pictureId),
+              image: NetworkImage(restaurantPicture.restaurant.pictureId),
             ),
           ),
           Padding(
@@ -48,7 +48,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          restaurantName.name,
+                          restaurantName.restaurant.name,
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -63,7 +63,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(left: 5),
                               child: Text(
-                                restaurantLocation.city,
+                                restaurantLocation.restaurant.city,
                                 style: const TextStyle(fontSize: 16),
                               ),
                             ),
@@ -99,7 +99,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                             height: 10,
                           ),
                           Text(
-                            restaurantDescription.description,
+                            restaurantDescription.restaurant.description,
                             textAlign: TextAlign.justify,
                             style: const TextStyle(fontSize: 14),
                           ),
@@ -152,8 +152,8 @@ class MobileDetailPageWidget extends StatelessWidget {
                               child: ListView(
                                 controller: scrollController,
                                 scrollDirection: Axis.horizontal,
-                                children:
-                                    restaurantMenu.menus.foods.map((foodMenu) {
+                                children: restaurantMenu.restaurant.menus.foods
+                                    .map((foodMenu) {
                                   return Padding(
                                     padding: const EdgeInsets.all(5),
                                     child: ClipRRect(
@@ -166,7 +166,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                                         child: Align(
                                           alignment: const Alignment(0, 0),
                                           child: Text(
-                                            foodMenu['name'].toString(),
+                                            foodMenu.toString(),
                                             textAlign: TextAlign.center,
                                             style: const TextStyle(
                                               fontSize: 14,
@@ -204,7 +204,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                               child: ListView(
                                 controller: scrollController,
                                 scrollDirection: Axis.horizontal,
-                                children: restaurantMenu.menus.drinks
+                                children: restaurantMenu.restaurant.menus.drinks
                                     .map((drinkMenu) {
                                   return Padding(
                                     padding: const EdgeInsets.all(5),
@@ -218,7 +218,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                                         child: Align(
                                           alignment: const Alignment(0, 0),
                                           child: Text(
-                                            drinkMenu['name'].toString(),
+                                            drinkMenu.toString(),
                                             textAlign: TextAlign.center,
                                             style: const TextStyle(
                                               fontSize: 14,

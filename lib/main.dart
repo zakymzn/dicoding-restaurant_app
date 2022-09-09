@@ -1,6 +1,6 @@
+import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:dicoding_restaurant_app/data/restaurant.dart';
 import 'package:dicoding_restaurant_app/main_page.dart';
 import 'package:dicoding_restaurant_app/detail_page.dart';
 

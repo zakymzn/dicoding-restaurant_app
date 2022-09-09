@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:dicoding_restaurant_app/data/restaurant.dart';
+import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
 import 'package:dicoding_restaurant_app/widgets/mobile_detail_page_widget.dart';
 import 'package:dicoding_restaurant_app/widgets/web_desktop_detail_page_widget.dart';
 
@@ -21,7 +21,7 @@ class DetailPage extends StatelessWidget {
           },
           icon: const Icon(Icons.arrow_back),
         ),
-        title: Text(restaurantDetail.name),
+        title: Text(restaurantDetail.restaurant.name),
       ),
       body: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth > 600) {

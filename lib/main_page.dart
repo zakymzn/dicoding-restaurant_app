@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer' as developer;
+import 'package:http/http.dart' as http;
+import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -7,7 +10,7 @@ import 'package:dicoding_restaurant_app/detail_page.dart';
 import 'package:dicoding_restaurant_app/widgets/mobile_restaurant_list_widget.dart';
 import 'package:dicoding_restaurant_app/widgets/search_widget.dart';
 import 'package:dicoding_restaurant_app/widgets/web_desktop_restaurant_list_widget.dart';
-import 'package:dicoding_restaurant_app/data/restaurant.dart';
+import 'package:dicoding_restaurant_app/data/restaurant_list.dart';
 
 class MainPage extends StatefulWidget {
   static const route = '/main_page';
@@ -19,31 +22,11 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  List<RestaurantDetail> restaurants = [];
-  String query = '';
-
   ConnectivityResult _connectionStatus = ConnectivityResult.none;
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> subscription;
 
-  Future init() async {
-    final restaurants = await Restaurants.getRestaurants(query);
-
-    setState(() {
-      this.restaurants = restaurants;
-    });
-  }
-
-  Future searchRestaurant(String query) async {
-    final restaurants = await Restaurants.getRestaurants(query);
-
-    if (!mounted) return;
-
-    setState(() {
-      this.query = query;
-      this.restaurants = restaurants;
-    });
-  }
+  late Future<RestaurantList> _futureRestaurantLlist;
 
   Future<void> initConnectivity() async {
     late ConnectivityResult result;
@@ -71,7 +54,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     initConnectivity();
-    init();
+    _futureRestaurantLlist = RestaurantAPI().list();
 
     subscription = Connectivity().onConnectivityChanged.listen((event) {});
   }
@@ -119,19 +102,33 @@ class _MainPageState extends State<MainPage> {
             ),
           ];
         },
-        body: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: restaurants.length,
-                itemBuilder: (context, index) {
-                  final restaurant = restaurants[index];
-
-                  return _buildRestaurantItem(context, restaurant);
-                },
-              ),
-            )
-          ],
+        body: FutureBuilder(
+          future: _futureRestaurantLlist,
+          builder: (context, snapshot) {
+            var restaurant = snapshot.data;
+            if (snapshot.connectionState != ConnectionState.done) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              if (snapshot.hasData) {
+                // return Text(restaurant!.restaurants.map((e) => e.description).toString());
+                return ListView.builder(
+                  itemCount: restaurant!.count.toInt(),
+                  itemBuilder: (context, index) {
+                    final restaurantItem = restaurant.restaurants[index];
+                    return _buildRestaurantItem(context, restaurantItem);
+                  },
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text("${snapshot.error}"),
+                );
+              } else {
+                return Text('hah?');
+              }
+            }
+          },
         ),
       ),
     );
@@ -165,12 +162,14 @@ class _MainPageState extends State<MainPage> {
 
   Widget _buildSearchWidget(BuildContext context) {
     return SearchWidget(
-      onChanged: searchRestaurant,
+      onChanged: (query) {
+        RestaurantAPI().search(query);
+      },
     );
   }
 
   Widget _buildRestaurantItem(
-      BuildContext context, RestaurantDetail restaurantDetail) {
+      BuildContext context, Restaurant restaurantDetail) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: GestureDetector(
@@ -191,7 +190,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _mobileRestaurantLlist(
-      BuildContext context, RestaurantDetail restaurantDetail) {
+      BuildContext context, Restaurant restaurantDetail) {
     return MobileRestaurantListWidget(
       restaurantID: restaurantDetail,
       restaurantName: restaurantDetail,
@@ -202,7 +201,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _webDesktopRestaurantList(
-      BuildContext context, RestaurantDetail restaurantDetail) {
+      BuildContext context, Restaurant restaurantDetail) {
     return WebDesktopRestaurantListWidget(
       restaurantID: restaurantDetail,
       restaurantName: restaurantDetail,

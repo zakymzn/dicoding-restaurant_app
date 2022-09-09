@@ -1,12 +1,13 @@
+import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:flutter/material.dart';
-import 'package:dicoding_restaurant_app/data/restaurant.dart';
+import 'package:dicoding_restaurant_app/data/restaurant_list.dart';
 
 class MobileRestaurantListWidget extends StatefulWidget {
-  final RestaurantDetail restaurantID;
-  final RestaurantDetail restaurantName;
-  final RestaurantDetail restaurantPicture;
-  final RestaurantDetail restaurantLocation;
-  final RestaurantDetail restaurantRating;
+  final Restaurant restaurantID;
+  final Restaurant restaurantName;
+  final Restaurant restaurantPicture;
+  final Restaurant restaurantLocation;
+  final Restaurant restaurantRating;
 
   const MobileRestaurantListWidget({
     super.key,
@@ -41,9 +42,10 @@ class _MobileRestaurantListWidgetState
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Hero(
-                      tag: widget.restaurantID.id,
+                      tag: widget.restaurantID.id!,
                       child: Image(
-                        image: NetworkImage(widget.restaurantPicture.pictureId),
+                        image:
+                            NetworkImage(widget.restaurantPicture.pictureId!),
                         fit: BoxFit.cover,
                         width: 100,
                         height: 80,
@@ -58,7 +60,7 @@ class _MobileRestaurantListWidgetState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.restaurantName.name,
+                        widget.restaurantName.name!,
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -75,7 +77,7 @@ class _MobileRestaurantListWidgetState
                             ),
                           ),
                           Text(
-                            widget.restaurantLocation.city,
+                            widget.restaurantLocation.city!,
                             style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
