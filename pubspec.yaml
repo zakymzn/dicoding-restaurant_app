@@ -40,6 +40,8 @@ dependencies:
   connectivity_plus: ^2.3.6+1
   http: ^0.13.5
   provider: ^6.0.3
+  url_launcher: ^6.1.5
+  material_design_icons_flutter: ^5.0.6996
 
 dev_dependencies:
   flutter_test:

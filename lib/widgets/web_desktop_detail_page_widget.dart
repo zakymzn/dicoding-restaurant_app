@@ -3,25 +3,13 @@ import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
 import 'package:dicoding_restaurant_app/detail_page.dart';
 
 class WebDesktopDetailPageWidget extends StatelessWidget {
-  final RestaurantDetail restaurantID;
-  final RestaurantDetail restaurantName;
-  final RestaurantDetail restaurantDescription;
-  final RestaurantDetail restaurantPicture;
-  final RestaurantDetail restaurantLocation;
-  final RestaurantDetail restaurantRating;
-  final RestaurantDetail restaurantMenu;
+  final RestaurantDetail restaurantDetail;
 
   final scrollController = ScrollController();
 
   WebDesktopDetailPageWidget({
     super.key,
-    required this.restaurantID,
-    required this.restaurantName,
-    required this.restaurantDescription,
-    required this.restaurantPicture,
-    required this.restaurantLocation,
-    required this.restaurantRating,
-    required this.restaurantMenu,
+    required this.restaurantDetail,
   });
 
   @override
@@ -34,14 +22,14 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
           children: [
             Expanded(
               child: Hero(
-                tag: restaurantID.restaurant.id!,
+                tag: restaurantDetail.restaurant.id!,
                 child: Padding(
                   padding: const EdgeInsets.all(5),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image(
                       image:
-                          NetworkImage(restaurantPicture.restaurant.pictureId!),
+                          NetworkImage(restaurantDetail.restaurant.pictureId!),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -62,7 +50,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                restaurantName.restaurant.name!,
+                                restaurantDetail.restaurant.name!,
                                 style: const TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
@@ -77,7 +65,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 5),
                                     child: Text(
-                                      restaurantLocation.restaurant.city!,
+                                      restaurantDetail.restaurant.city!,
                                       style: const TextStyle(fontSize: 16),
                                     ),
                                   ),
@@ -113,7 +101,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                   height: 10,
                                 ),
                                 Text(
-                                  restaurantDescription.restaurant.description!,
+                                  restaurantDetail.restaurant.description!,
                                   textAlign: TextAlign.justify,
                                   style: const TextStyle(fontSize: 14),
                                 ),
@@ -166,7 +154,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                     child: ListView(
                                       controller: scrollController,
                                       scrollDirection: Axis.horizontal,
-                                      children: restaurantMenu
+                                      children: restaurantDetail
                                           .restaurant.menus!.foods
                                           .map((foodMenu) {
                                         return Padding(
@@ -222,7 +210,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                     child: ListView(
                                       controller: scrollController,
                                       scrollDirection: Axis.horizontal,
-                                      children: restaurantMenu
+                                      children: restaurantDetail
                                           .restaurant.menus!.drinks
                                           .map((drinkMenu) {
                                         return Padding(

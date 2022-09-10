@@ -1,4 +1,6 @@
 import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
+import 'package:dicoding_restaurant_app/profile_page.dart';
+import 'package:dicoding_restaurant_app/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:dicoding_restaurant_app/main_page.dart';
@@ -22,6 +24,7 @@ class RestaurantApp extends StatelessWidget {
           bodyMedium: GoogleFonts.notoSans(),
         ),
       ),
+      debugShowCheckedModeBanner: false,
       initialRoute: MainPage.route,
       routes: {
         MainPage.route: (context) => const MainPage(),
@@ -29,6 +32,8 @@ class RestaurantApp extends StatelessWidget {
               restaurantDetail: ModalRoute.of(context)?.settings.arguments
                   as RestaurantDetail,
             ),
+        SearchPage.route: (context) => const SearchPage(),
+        ProfilePage.route: (context) => const ProfilePage(),
       },
     );
   }

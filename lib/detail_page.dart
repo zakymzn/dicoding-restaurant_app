@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:flutter/material.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
 import 'package:dicoding_restaurant_app/widgets/mobile_detail_page_widget.dart';
@@ -35,25 +36,13 @@ class DetailPage extends StatelessWidget {
 
   Widget _mobileDetailPage(BuildContext context) {
     return MobileDetailPageWidget(
-      restaurantID: restaurantDetail,
-      restaurantName: restaurantDetail,
-      restaurantDescription: restaurantDetail,
-      restaurantPicture: restaurantDetail,
-      restaurantLocation: restaurantDetail,
-      restaurantRating: restaurantDetail,
-      restaurantMenu: restaurantDetail,
+      restaurantDetail: restaurantDetail,
     );
   }
 
   Widget _webDesktopDetailPage(BuildContext context) {
     return WebDesktopDetailPageWidget(
-      restaurantID: restaurantDetail,
-      restaurantName: restaurantDetail,
-      restaurantDescription: restaurantDetail,
-      restaurantPicture: restaurantDetail,
-      restaurantLocation: restaurantDetail,
-      restaurantRating: restaurantDetail,
-      restaurantMenu: restaurantDetail,
+      restaurantDetail: restaurantDetail,
     );
   }
 }

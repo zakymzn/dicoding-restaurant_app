@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer' as developer;
+import 'package:dicoding_restaurant_app/profile_page.dart';
+import 'package:dicoding_restaurant_app/search_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dicoding_restaurant_app/detail_page.dart';
 import 'package:dicoding_restaurant_app/widgets/mobile_restaurant_list_widget.dart';
-import 'package:dicoding_restaurant_app/widgets/search_widget.dart';
 import 'package:dicoding_restaurant_app/widgets/web_desktop_restaurant_list_widget.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_list.dart';
 
@@ -56,7 +57,11 @@ class _MainPageState extends State<MainPage> {
     initConnectivity();
     _futureRestaurantLlist = RestaurantAPI().list();
 
-    subscription = Connectivity().onConnectivityChanged.listen((event) {});
+    subscription = Connectivity().onConnectivityChanged.listen((event) {
+      setState(() {
+        _connectionStatus = event;
+      });
+    });
   }
 
   @override
@@ -93,12 +98,27 @@ class _MainPageState extends State<MainPage> {
                 ),
                 titlePadding: const EdgeInsets.fromLTRB(20, 0, 0, 20),
               ),
-            ),
-            SliverAppBar(
-              pinned: true,
-              backgroundColor: Colors.brown.shade100,
-              elevation: 0,
-              title: _buildSearchWidget(context),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, SearchPage.route);
+                  },
+                  icon: Icon(Icons.search),
+                ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, ProfilePage.route);
+                  },
+                  iconSize: 30,
+                  icon: Hero(
+                    tag: 'profile',
+                    child: CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: AssetImage('images/profile.jpg'),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ];
         },
@@ -121,10 +141,10 @@ class _MainPageState extends State<MainPage> {
                 );
               } else if (snapshot.hasError) {
                 return Center(
-                  child: Text("${snapshot.error}"),
+                  child: Text("Data tidak berhasil dimuat"),
                 );
               } else {
-                return Text('hah?');
+                return Text('');
               }
             }
           },
@@ -156,14 +176,6 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildSearchWidget(BuildContext context) {
-    return SearchWidget(
-      onChanged: (query) {
-        RestaurantAPI().search(query);
-      },
     );
   }
 
