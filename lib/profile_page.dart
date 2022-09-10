@@ -1,4 +1,4 @@
-import 'package:dicoding_restaurant_app/widgets/mobile_profile_page.dart';
+import 'package:dicoding_restaurant_app/widgets/mobile_profile_page_widget.dart';
 import 'package:dicoding_restaurant_app/widgets/web_desktop_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';

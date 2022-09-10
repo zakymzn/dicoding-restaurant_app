@@ -3,19 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_list.dart';
 
 class MobileRestaurantListWidget extends StatefulWidget {
-  final Restaurant restaurantID;
-  final Restaurant restaurantName;
-  final Restaurant restaurantPicture;
-  final Restaurant restaurantLocation;
-  final Restaurant restaurantRating;
+  final Restaurant restaurantList;
 
   const MobileRestaurantListWidget({
     super.key,
-    required this.restaurantID,
-    required this.restaurantName,
-    required this.restaurantPicture,
-    required this.restaurantLocation,
-    required this.restaurantRating,
+    required this.restaurantList,
   });
 
   @override
@@ -42,10 +34,10 @@ class _MobileRestaurantListWidgetState
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Hero(
-                      tag: widget.restaurantID.id!,
+                      tag: widget.restaurantList.id!,
                       child: Image(
                         image: NetworkImage(RestaurantAPI()
-                            .smallImage(widget.restaurantPicture.pictureId)),
+                            .smallImage(widget.restaurantList.pictureId)),
                         fit: BoxFit.cover,
                         width: 100,
                         height: 80,
@@ -60,7 +52,7 @@ class _MobileRestaurantListWidgetState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.restaurantName.name!,
+                        widget.restaurantList.name!,
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -77,7 +69,7 @@ class _MobileRestaurantListWidgetState
                             ),
                           ),
                           Text(
-                            widget.restaurantLocation.city!,
+                            widget.restaurantList.city!,
                             style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
@@ -95,7 +87,7 @@ class _MobileRestaurantListWidgetState
                               color: Colors.orangeAccent,
                             ),
                           ),
-                          Text(widget.restaurantRating.rating.toString()),
+                          Text(widget.restaurantList.rating.toString()),
                         ],
                       ),
                     ],

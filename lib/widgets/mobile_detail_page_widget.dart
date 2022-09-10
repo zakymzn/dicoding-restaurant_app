@@ -4,9 +4,9 @@ import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
 import 'package:dicoding_restaurant_app/detail_page.dart';
 
 class MobileDetailPageWidget extends StatefulWidget {
-  final RestaurantDetail restaurantDetail;
+  final Restaurant restaurantDetail;
 
-  MobileDetailPageWidget({
+  const MobileDetailPageWidget({
     super.key,
     required this.restaurantDetail,
   });
@@ -25,10 +25,9 @@ class _MobileDetailPageWidgetState extends State<MobileDetailPageWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Hero(
-            tag: widget.restaurantDetail.restaurant.id!,
+            tag: widget.restaurantDetail.id!,
             child: Image(
-              image:
-                  NetworkImage(widget.restaurantDetail.restaurant.pictureId!),
+              image: NetworkImage(widget.restaurantDetail.pictureId!),
             ),
           ),
           Padding(
@@ -43,7 +42,7 @@ class _MobileDetailPageWidgetState extends State<MobileDetailPageWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.restaurantDetail.restaurant.name!,
+                          widget.restaurantDetail.name!,
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -58,7 +57,7 @@ class _MobileDetailPageWidgetState extends State<MobileDetailPageWidget> {
                             Padding(
                               padding: const EdgeInsets.only(left: 5),
                               child: Text(
-                                widget.restaurantDetail.restaurant.city!,
+                                widget.restaurantDetail.city!,
                                 style: const TextStyle(fontSize: 16),
                               ),
                             ),
@@ -94,7 +93,7 @@ class _MobileDetailPageWidgetState extends State<MobileDetailPageWidget> {
                             height: 10,
                           ),
                           Text(
-                            widget.restaurantDetail.restaurant.description!,
+                            widget.restaurantDetail.description!,
                             textAlign: TextAlign.justify,
                             style: const TextStyle(fontSize: 14),
                           ),
@@ -147,8 +146,7 @@ class _MobileDetailPageWidgetState extends State<MobileDetailPageWidget> {
                               child: ListView(
                                 controller: scrollController,
                                 scrollDirection: Axis.horizontal,
-                                children: widget
-                                    .restaurantDetail.restaurant.menus!.foods
+                                children: widget.restaurantDetail.menus!.foods
                                     .map((foodMenu) {
                                   return Padding(
                                     padding: const EdgeInsets.all(5),
@@ -200,8 +198,7 @@ class _MobileDetailPageWidgetState extends State<MobileDetailPageWidget> {
                               child: ListView(
                                 controller: scrollController,
                                 scrollDirection: Axis.horizontal,
-                                children: widget
-                                    .restaurantDetail.restaurant.menus!.drinks
+                                children: widget.restaurantDetail.menus!.drinks
                                     .map((drinkMenu) {
                                   return Padding(
                                     padding: const EdgeInsets.all(5),
