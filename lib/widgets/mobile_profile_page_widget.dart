@@ -22,7 +22,7 @@ class MobileProfileScreen extends StatelessWidget {
                   child: CircleAvatar(
                     backgroundColor: Colors.transparent,
                     backgroundImage: AssetImage('images/profile.jpg'),
-                    radius: 40,
+                    radius: 35,
                   ),
                 ),
                 Column(
@@ -31,7 +31,7 @@ class MobileProfileScreen extends StatelessWidget {
                     Text(
                       name,
                       style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.brown),
                     ),

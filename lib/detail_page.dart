@@ -5,10 +5,10 @@ import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
 import 'package:dicoding_restaurant_app/widgets/mobile_detail_page_widget.dart';
 import 'package:dicoding_restaurant_app/widgets/web_desktop_detail_page_widget.dart';
 
-class DetailPage extends StatefulWidget {
+class DetailPage extends StatelessWidget {
   static const route = '/detail_page';
 
-  String? id;
+  late String id;
 
   DetailPage({
     super.key,
@@ -16,29 +16,37 @@ class DetailPage extends StatefulWidget {
   });
 
   @override
-  State<DetailPage> createState() => _DetailPageState();
-}
-
-class _DetailPageState extends State<DetailPage> {
-  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: RestaurantAPI().detail(widget.id),
+      future: RestaurantAPI().detail(id),
       builder: (context, snapshot) {
-        var restaurant = snapshot.data!.restaurant;
+        var restaurant = snapshot.data;
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(
             child: CircularProgressIndicator(),
           );
         } else {
           if (snapshot.hasData) {
-            return LayoutBuilder(builder: (context, constraints) {
-              if (constraints.maxWidth > 600) {
-                return WebDesktopDetailPageWidget(restaurantDetail: restaurant);
-              } else {
-                return MobileDetailPageWidget(restaurantDetail: restaurant);
-              }
-            });
+            return Scaffold(
+              appBar: AppBar(
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.arrow_back),
+                ),
+                title: Text(restaurant!.restaurant.name!),
+              ),
+              body: LayoutBuilder(builder: (context, constraints) {
+                if (constraints.maxWidth > 600) {
+                  return WebDesktopDetailPageWidget(
+                      restaurantDetail: restaurant.restaurant);
+                } else {
+                  return MobileDetailPageWidget(
+                      restaurantDetail: restaurant.restaurant);
+                }
+              }),
+            );
           } else if (snapshot.hasError) {
             return Center(
               child: Text("Data tidak berhasil dimuat"),

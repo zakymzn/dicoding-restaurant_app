@@ -1,5 +1,6 @@
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_search.dart';
+import 'package:dicoding_restaurant_app/detail_page.dart';
 import 'package:flutter/material.dart';
 
 class SearchResultWidget extends StatelessWidget {
@@ -19,16 +20,19 @@ class SearchResultWidget extends StatelessWidget {
         child: Container(
           color: Colors.brown.shade200,
           child: ListTile(
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                height: 50,
-                width: 50,
-                child: Image(
-                  image: NetworkImage(
-                    RestaurantAPI().smallImage(restaurantFounded.pictureId),
+            leading: Hero(
+              tag: restaurantFounded.id!,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  height: 50,
+                  width: 50,
+                  child: Image(
+                    image: NetworkImage(
+                      RestaurantAPI().smallImage(restaurantFounded.pictureId),
+                    ),
+                    fit: BoxFit.cover,
                   ),
-                  fit: BoxFit.cover,
                 ),
               ),
             ),
@@ -52,6 +56,8 @@ class SearchResultWidget extends StatelessWidget {
                 ),
               ],
             ),
+            onTap: () => Navigator.pushNamed(context, DetailPage.route,
+                arguments: restaurantFounded.id),
           ),
         ),
       ),
