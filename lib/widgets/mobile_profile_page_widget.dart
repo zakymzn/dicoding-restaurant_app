@@ -1,5 +1,5 @@
 import 'package:dicoding_restaurant_app/data/profile_data.dart';
-import 'package:dicoding_restaurant_app/widgets/profile_url.dart';
+import 'package:dicoding_restaurant_app/widgets/profile_url_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -40,7 +40,7 @@ class MobileProfileScreen extends StatelessWidget {
                       style: TextStyle(fontSize: 13, color: Colors.brown),
                     )
                   ],
-                )
+                ),
               ],
             ),
             SizedBox(

@@ -1,9 +1,11 @@
 import 'dart:ui';
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
+import 'package:dicoding_restaurant_app/provider/favorite_button_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
 import 'package:dicoding_restaurant_app/widgets/mobile_detail_page_widget.dart';
 import 'package:dicoding_restaurant_app/widgets/web_desktop_detail_page_widget.dart';
+import 'package:provider/provider.dart';
 
 class DetailPage extends StatelessWidget {
   static const route = '/detail_page';
@@ -38,7 +40,7 @@ class DetailPage extends StatelessWidget {
                 title: Text(restaurant!.restaurant.name!),
               ),
               body: LayoutBuilder(builder: (context, constraints) {
-                if (constraints.maxWidth > 600) {
+                if (constraints.maxWidth > 800) {
                   return WebDesktopDetailPageWidget(
                       restaurantDetail: restaurant.restaurant);
                 } else {
@@ -56,27 +58,6 @@ class DetailPage extends StatelessWidget {
           }
         }
       },
-    );
-  }
-}
-
-class FavoriteButton extends StatefulWidget {
-  const FavoriteButton({super.key});
-
-  @override
-  State<FavoriteButton> createState() => _FavoriteButtonState();
-}
-
-class _FavoriteButtonState extends State<FavoriteButton> {
-  bool isFavorited = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () => setState(() {
-        isFavorited = !isFavorited;
-      }),
-      icon: Icon(isFavorited ? Icons.favorite : Icons.favorite_border),
     );
   }
 }

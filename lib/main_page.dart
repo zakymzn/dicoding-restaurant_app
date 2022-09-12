@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer' as developer;
 import 'package:dicoding_restaurant_app/network_disconnected_page.dart';
 import 'package:dicoding_restaurant_app/profile_page.dart';
+import 'package:dicoding_restaurant_app/provider/favorite_button_provider.dart';
 import 'package:dicoding_restaurant_app/search_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
@@ -13,6 +14,7 @@ import 'package:dicoding_restaurant_app/detail_page.dart';
 import 'package:dicoding_restaurant_app/widgets/mobile_restaurant_list_widget.dart';
 import 'package:dicoding_restaurant_app/widgets/web_desktop_restaurant_list_widget.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_list.dart';
+import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
   static const route = '/main_page';

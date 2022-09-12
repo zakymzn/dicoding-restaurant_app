@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_list.dart';
+import 'package:dicoding_restaurant_app/data/restaurant_review.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_search.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,6 +12,7 @@ class RestaurantAPI {
   final String _detail = '/detail/';
   final String _search = '/search?q=';
   final String _review = '/review';
+  final String _headers = 'application/json';
   final String _smallImage = '/images/small/';
   final String _mediumImage = '/images/medium/';
   final String _largeImage = '/images/large/';
@@ -39,6 +42,19 @@ class RestaurantAPI {
     } else {
       throw Exception('Failed to load restaurant search');
     }
+  }
+
+  Future<RestaurantReview> addReview(id, name, review) async {
+    final response = await http.post(
+      Uri.parse("$_baseUrl$_review"),
+      headers: {"Content-Type": _headers},
+      body: {
+        "id": id,
+        "name": name,
+        "review": review,
+      },
+    );
+    return RestaurantReview.fromJson(json.decode(response.body));
   }
 
   smallImage(pictureId) {
