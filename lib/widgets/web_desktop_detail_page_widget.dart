@@ -1,8 +1,9 @@
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
-import 'package:dicoding_restaurant_app/provider/favorite_button_provider.dart';
+import 'package:dicoding_restaurant_app/providers/favorite_button_provider.dart';
+import 'package:dicoding_restaurant_app/widgets/favorite_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
-import 'package:dicoding_restaurant_app/detail_page.dart';
+import 'package:dicoding_restaurant_app/pages/detail_page.dart';
 import 'package:provider/provider.dart';
 
 class WebDesktopDetailPageWidget extends StatelessWidget {
@@ -385,6 +386,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                 ),
                                 ListView.builder(
                                   shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
                                   itemCount:
                                       restaurantDetail.customerReviews!.length,
                                   itemBuilder: (context, index) {

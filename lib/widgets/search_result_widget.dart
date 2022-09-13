@@ -1,6 +1,6 @@
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_search.dart';
-import 'package:dicoding_restaurant_app/detail_page.dart';
+import 'package:dicoding_restaurant_app/pages/detail_page.dart';
 import 'package:flutter/material.dart';
 
 class SearchResultWidget extends StatelessWidget {

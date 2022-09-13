@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer' as developer;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
-import 'package:dicoding_restaurant_app/network_disconnected_page.dart';
+import 'package:dicoding_restaurant_app/pages/network_disconnected_page.dart';
 import 'package:dicoding_restaurant_app/widgets/search_result_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

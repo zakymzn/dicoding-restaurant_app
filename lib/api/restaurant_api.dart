@@ -12,7 +12,7 @@ class RestaurantAPI {
   final String _detail = '/detail/';
   final String _search = '/search?q=';
   final String _review = '/review';
-  final String _headers = 'application/json';
+  final String _headers = 'application/x-www-form-urlencoded';
   final String _smallImage = '/images/small/';
   final String _mediumImage = '/images/medium/';
   final String _largeImage = '/images/large/';

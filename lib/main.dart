@@ -1,11 +1,14 @@
+import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
-import 'package:dicoding_restaurant_app/profile_page.dart';
-import 'package:dicoding_restaurant_app/provider/favorite_button_provider.dart';
-import 'package:dicoding_restaurant_app/search_page.dart';
+import 'package:dicoding_restaurant_app/pages/profile_page.dart';
+import 'package:dicoding_restaurant_app/providers/favorite_button_provider.dart';
+import 'package:dicoding_restaurant_app/pages/search_page.dart';
+import 'package:dicoding_restaurant_app/providers/restaurant_detail_provider.dart';
+import 'package:dicoding_restaurant_app/providers/restaurant_list_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:dicoding_restaurant_app/main_page.dart';
-import 'package:dicoding_restaurant_app/detail_page.dart';
+import 'package:dicoding_restaurant_app/pages/main_page.dart';
+import 'package:dicoding_restaurant_app/pages/detail_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -17,8 +20,22 @@ class RestaurantApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => FavoriteButtonProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<FavoriteButtonProvider>(
+          create: (context) => FavoriteButtonProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => RestaurantListProvider(
+            restaurantAPI: RestaurantAPI(),
+          ),
+        ),
+        // ChangeNotifierProvider(
+        //   create: (context) => RestaurantDetailProvider(
+        //     restaurantAPI: RestaurantAPI(),
+        //   ),
+        // ),
+      ],
       child: MaterialApp(
         title: "Restaurant App",
         theme: ThemeData(

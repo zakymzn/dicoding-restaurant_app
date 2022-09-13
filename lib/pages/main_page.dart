@@ -1,16 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer' as developer;
-import 'package:dicoding_restaurant_app/network_disconnected_page.dart';
-import 'package:dicoding_restaurant_app/profile_page.dart';
-import 'package:dicoding_restaurant_app/provider/favorite_button_provider.dart';
-import 'package:dicoding_restaurant_app/search_page.dart';
+import 'package:dicoding_restaurant_app/pages/network_disconnected_page.dart';
+import 'package:dicoding_restaurant_app/pages/profile_page.dart';
+import 'package:dicoding_restaurant_app/providers/favorite_button_provider.dart';
+import 'package:dicoding_restaurant_app/pages/search_page.dart';
+import 'package:dicoding_restaurant_app/providers/restaurant_list_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dicoding_restaurant_app/detail_page.dart';
+import 'package:dicoding_restaurant_app/pages/detail_page.dart';
 import 'package:dicoding_restaurant_app/widgets/mobile_restaurant_list_widget.dart';
 import 'package:dicoding_restaurant_app/widgets/web_desktop_restaurant_list_widget.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_list.dart';
@@ -118,30 +119,55 @@ class _MainPageState extends State<MainPage> {
               ),
             ];
           },
-          body: FutureBuilder(
-            future: _futureRestaurantLlist,
-            builder: (context, snapshot) {
-              var restaurant = snapshot.data;
-              if (snapshot.connectionState != ConnectionState.done) {
+          // body: FutureBuilder(
+          //   future: _futureRestaurantLlist,
+          //   builder: (context, snapshot) {
+          //     var restaurant = snapshot.data;
+          //     if (snapshot.connectionState != ConnectionState.done) {
+          //       return Center(
+          //         child: CircularProgressIndicator(),
+          //       );
+          //     } else {
+          //       if (snapshot.hasData) {
+          //         return ListView.builder(
+          //           itemCount: restaurant!.count.toInt(),
+          //           itemBuilder: (context, index) {
+          //             final restaurantItem = restaurant.restaurants[index];
+          //             return _buildRestaurantItem(context, restaurantItem);
+          //           },
+          //         );
+          //       } else if (snapshot.hasError) {
+          //         return Center(
+          //           child: Text("Data tidak berhasil dimuat"),
+          //         );
+          //       } else {
+          //         return Text('');
+          //       }
+          //     }
+          //   },
+          // ),
+          body: Consumer<RestaurantListProvider>(
+            builder: (context, state, _) {
+              if (state.state == ResultState.loading) {
                 return Center(
                   child: CircularProgressIndicator(),
                 );
+              } else if (state.state == ResultState.hasData) {
+                return ListView.builder(
+                  itemCount: state.list.restaurants.length,
+                  itemBuilder: (context, index) {
+                    var restaurant = state.list.restaurants[index];
+                    return _buildRestaurantItem(context, restaurant);
+                  },
+                );
+              } else if (state.state == ResultState.noData) {
+                return Center(
+                  child: Text(state.message),
+                );
               } else {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    itemCount: restaurant!.count.toInt(),
-                    itemBuilder: (context, index) {
-                      final restaurantItem = restaurant.restaurants[index];
-                      return _buildRestaurantItem(context, restaurantItem);
-                    },
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text("Data tidak berhasil dimuat"),
-                  );
-                } else {
-                  return Text('');
-                }
+                return Center(
+                  child: Text(''),
+                );
               }
             },
           ),

@@ -1,10 +1,13 @@
 import 'dart:ui';
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
-import 'package:dicoding_restaurant_app/provider/favorite_button_provider.dart';
+import 'package:dicoding_restaurant_app/providers/favorite_button_provider.dart';
+import 'package:dicoding_restaurant_app/providers/restaurant_detail_provider.dart';
+import 'package:dicoding_restaurant_app/widgets/write_review_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
 import 'package:dicoding_restaurant_app/widgets/mobile_detail_page_widget.dart';
 import 'package:dicoding_restaurant_app/widgets/web_desktop_detail_page_widget.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
 class DetailPage extends StatelessWidget {
@@ -48,6 +51,18 @@ class DetailPage extends StatelessWidget {
                       restaurantDetail: restaurant.restaurant);
                 }
               }),
+              floatingActionButton: FloatingActionButton.extended(
+                onPressed: () async {
+                  await showDialog(
+                    context: context,
+                    builder: (context) => WriteReviewWidget(
+                      restaurantId: id,
+                    ),
+                  );
+                },
+                label: Text('Tulis ulasan'),
+                icon: Icon(MdiIcons.pencil),
+              ),
             );
           } else if (snapshot.hasError) {
             return Center(
@@ -59,6 +74,45 @@ class DetailPage extends StatelessWidget {
         }
       },
     );
+    // =====
+    // return Consumer<RestaurantDetailProvider>(
+    //   builder: (context, state, _) {
+    //     if (state.state == ResultState.loading) {
+    //       return Center(
+    //         child: CircularProgressIndicator(),
+    //       );
+    //     } else if (state.state == ResultState.hasData) {
+    //       return Scaffold(
+    //         appBar: AppBar(
+    //           leading: IconButton(
+    //             onPressed: () {
+    //               Navigator.pop(context);
+    //             },
+    //             icon: Icon(Icons.arrow_back),
+    //           ),
+    //           title: Text(state.detail.restaurant.name!),
+    //         ),
+    //         body: LayoutBuilder(builder: (context, constraints) {
+    //           if (constraints.maxWidth > 800) {
+    //             return WebDesktopDetailPageWidget(
+    //                 restaurantDetail: state.detail.restaurant);
+    //           } else {
+    //             return MobileDetailPageWidget(
+    //                 restaurantDetail: state.detail.restaurant);
+    //           }
+    //         }),
+    //       );
+    //     } else if (state.state == ResultState.noData) {
+    //       return Center(
+    //         child: Text(state.message),
+    //       );
+    //     } else {
+    //       return Center(
+    //         child: Text(''),
+    //       );
+    //     }
+    //   },
+    // );
   }
 }
 
