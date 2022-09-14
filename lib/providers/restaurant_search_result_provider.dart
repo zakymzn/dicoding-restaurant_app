@@ -1,38 +1,37 @@
-import 'package:dicoding_restaurant_app/pages/detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
-import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
+import 'package:dicoding_restaurant_app/data/restaurant_search.dart';
 
 enum ResultState { loading, noData, hasData, error }
 
-class RestaurantDetailProvider extends ChangeNotifier {
+class RestaurantSearchResultProvider extends ChangeNotifier {
   final RestaurantAPI restaurantAPI;
 
-  RestaurantDetailProvider({required this.restaurantAPI, required String id}) {
-    _fetchAllRestaurantDetail(id);
+  RestaurantSearchResultProvider({required this.restaurantAPI, String? query}) {
+    _fetchAllRestaurantSearch(query);
   }
 
-  late RestaurantDetail _restaurantDetail;
+  late RestaurantSearch _restaurantSearch;
   late ResultState _state;
   String _message = '';
 
-  RestaurantDetail get detail => _restaurantDetail;
+  RestaurantSearch get search => _restaurantSearch;
   ResultState get state => _state;
   String get message => _message;
 
-  Future _fetchAllRestaurantDetail(id) async {
+  Future _fetchAllRestaurantSearch(query) async {
     try {
       _state = ResultState.loading;
       notifyListeners();
-      final restaurant = await restaurantAPI.detail(id);
-      if (restaurant.restaurant.toJson().isEmpty) {
+      final restaurant = await restaurantAPI.search(query);
+      if (restaurant.restaurants.isEmpty) {
         _state = ResultState.noData;
         notifyListeners();
         return _message = 'Tidak ada data';
       } else {
         _state = ResultState.hasData;
         notifyListeners();
-        return _restaurantDetail = restaurant;
+        return _restaurantSearch = restaurant;
       }
     } catch (e) {
       _state = ResultState.error;

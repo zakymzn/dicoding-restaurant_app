@@ -22,16 +22,21 @@ class DetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: RestaurantAPI().detail(id),
-      builder: (context, snapshot) {
-        var restaurant = snapshot.data;
-        if (snapshot.connectionState != ConnectionState.done) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          if (snapshot.hasData) {
+    return ChangeNotifierProvider<RestaurantDetailProvider>(
+      create: (context) => RestaurantDetailProvider(
+        restaurantAPI: RestaurantAPI(),
+        id: id,
+      ),
+      child: Consumer<RestaurantDetailProvider>(
+        builder: (context, state, _) {
+          if (state.state == ResultState.loading) {
+            return Container(
+              color: Colors.brown.shade100,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          } else if (state.state == ResultState.hasData) {
             return Scaffold(
               appBar: AppBar(
                 leading: IconButton(
@@ -40,79 +45,45 @@ class DetailPage extends StatelessWidget {
                   },
                   icon: Icon(Icons.arrow_back),
                 ),
-                title: Text(restaurant!.restaurant.name!),
+                title: Text(state.detail.restaurant.name!),
               ),
-              body: LayoutBuilder(builder: (context, constraints) {
-                if (constraints.maxWidth > 800) {
-                  return WebDesktopDetailPageWidget(
-                      restaurantDetail: restaurant.restaurant);
-                } else {
-                  return MobileDetailPageWidget(
-                      restaurantDetail: restaurant.restaurant);
-                }
-              }),
+              body: RefreshIndicator(
+                onRefresh: () => Navigator.pushReplacementNamed(
+                    context, DetailPage.route,
+                    arguments: state.detail.restaurant.id),
+                child: LayoutBuilder(builder: (context, constraints) {
+                  if (constraints.maxWidth > 800) {
+                    return WebDesktopDetailPageWidget(
+                        restaurantDetail: state.detail.restaurant);
+                  } else {
+                    return MobileDetailPageWidget(
+                        restaurantDetail: state.detail.restaurant);
+                  }
+                }),
+              ),
               floatingActionButton: FloatingActionButton.extended(
                 onPressed: () async {
                   await showDialog(
                     context: context,
-                    builder: (context) => WriteReviewWidget(
-                      restaurantId: id,
-                    ),
+                    builder: (context) => WriteReviewWidget(restaurantId: id),
                   );
                 },
                 label: Text('Tulis ulasan'),
-                icon: Icon(MdiIcons.pencil),
+                icon: Icon(Icons.edit),
               ),
             );
-          } else if (snapshot.hasError) {
+          } else if (state.state == ResultState.noData) {
             return Center(
-              child: Text("Data tidak berhasil dimuat"),
+              child: Text(state.message),
             );
           } else {
-            return Text('');
+            return Center(
+              child: Text(''),
+            );
           }
-        }
-      },
+        },
+      ),
     );
-    // =====
-    // return Consumer<RestaurantDetailProvider>(
-    //   builder: (context, state, _) {
-    //     if (state.state == ResultState.loading) {
-    //       return Center(
-    //         child: CircularProgressIndicator(),
-    //       );
-    //     } else if (state.state == ResultState.hasData) {
-    //       return Scaffold(
-    //         appBar: AppBar(
-    //           leading: IconButton(
-    //             onPressed: () {
-    //               Navigator.pop(context);
-    //             },
-    //             icon: Icon(Icons.arrow_back),
-    //           ),
-    //           title: Text(state.detail.restaurant.name!),
-    //         ),
-    //         body: LayoutBuilder(builder: (context, constraints) {
-    //           if (constraints.maxWidth > 800) {
-    //             return WebDesktopDetailPageWidget(
-    //                 restaurantDetail: state.detail.restaurant);
-    //           } else {
-    //             return MobileDetailPageWidget(
-    //                 restaurantDetail: state.detail.restaurant);
-    //           }
-    //         }),
-    //       );
-    //     } else if (state.state == ResultState.noData) {
-    //       return Center(
-    //         child: Text(state.message),
-    //       );
-    //     } else {
-    //       return Center(
-    //         child: Text(''),
-    //       );
-    //     }
-    //   },
-    // );
   }
 }
 

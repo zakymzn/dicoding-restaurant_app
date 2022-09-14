@@ -3,10 +3,13 @@ import 'dart:developer' as developer;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:dicoding_restaurant_app/pages/network_disconnected_page.dart';
+import 'package:dicoding_restaurant_app/providers/restaurant_search_provider.dart';
+import 'package:dicoding_restaurant_app/providers/restaurant_search_result_provider.dart';
 import 'package:dicoding_restaurant_app/widgets/search_result_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {
   static const route = '/search_page';
@@ -18,9 +21,9 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  TextEditingController textEditingController = TextEditingController();
+  late TextEditingController textEditingController;
 
-  String? query;
+  // String? query;
 
   ConnectivityResult _connectionStatus = ConnectivityResult.none;
   final Connectivity _connectivity = Connectivity();
@@ -61,6 +64,12 @@ class _SearchPageState extends State<SearchPage> {
     super.initState();
     initConnectivity();
 
+    final RestaurantSearchProvider restaurantSearchProvider =
+        Provider.of<RestaurantSearchProvider>(context, listen: false);
+
+    textEditingController =
+        TextEditingController(text: restaurantSearchProvider.query);
+
     subscription = Connectivity().onConnectivityChanged.listen((event) {
       setState(() {
         _connectionStatus = event;
@@ -70,6 +79,8 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    String? query = Provider.of<RestaurantSearchProvider>(context).query;
+
     if (_connectionStatus != ConnectivityResult.none) {
       return Scaffold(
         appBar: AppBar(
@@ -77,52 +88,57 @@ class _SearchPageState extends State<SearchPage> {
             onPressed: () => Navigator.pop(context),
             icon: Icon(Icons.arrow_back),
           ),
-          title: TextField(
-            controller: textEditingController,
-            decoration: InputDecoration(
-              hintText: 'Cari restoran di sini',
-              hintStyle: TextStyle(
-                color: Colors.white,
-              ),
-              enabledBorder: InputBorder.none,
-              focusedBorder: InputBorder.none,
-            ),
-            style: TextStyle(
-              color: Colors.white,
-            ),
-            cursorColor: Colors.brown.shade100,
-            onChanged: (value) {
-              setState(() {
-                query = value;
-              });
+          title: Consumer<RestaurantSearchProvider>(
+            builder: (context, state, _) {
+              return TextField(
+                controller: textEditingController,
+                decoration: InputDecoration(
+                  hintText: 'Cari restoran di sini',
+                  hintStyle: TextStyle(
+                    color: Colors.white,
+                  ),
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                ),
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                cursorColor: Colors.brown.shade100,
+                onChanged: (value) {
+                  Provider.of<RestaurantSearchProvider>(context, listen: false)
+                      .searchRestaurant(value);
+                  setState(() {});
+                },
+              );
             },
           ),
           elevation: 2,
         ),
-        body: FutureBuilder(
-          future: RestaurantAPI().search(query),
-          builder: (context, snapshot) {
-            var restaurant = snapshot.data;
-            if (snapshot.connectionState != ConnectionState.done) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text('Sedang mencari restoran untuk Anda'),
-                  ],
-                ),
-              );
-            } else {
-              if (snapshot.hasData) {
-                if (restaurant!.founded > 0) {
+        body: ChangeNotifierProvider<RestaurantSearchResultProvider>(
+          create: (context) => RestaurantSearchResultProvider(
+            restaurantAPI: RestaurantAPI(),
+            query: query,
+          ),
+          child: Consumer<RestaurantSearchResultProvider>(
+            builder: (context, state, _) {
+              if (state.state == ResultState.loading) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text('Sedang mencari restoran untuk Anda'),
+                    ],
+                  ),
+                );
+              } else if (state.state == ResultState.hasData) {
+                if (state.search.founded > 0) {
                   return ListView.builder(
-                    itemCount: restaurant.founded.toInt(),
                     itemBuilder: (context, index) {
-                      final restaurantFounded = restaurant.restaurants[index];
+                      final restaurantFounded = state.search.restaurants[index];
                       return SearchResultWidget(
                           restaurantFounded: restaurantFounded);
                     },
@@ -148,36 +164,22 @@ class _SearchPageState extends State<SearchPage> {
                             fontWeight: FontWeight.bold,
                             color: Colors.brown,
                           ),
-                        ),
+                        )
                       ],
                     ),
                   );
                 }
+              } else if (state.state == ResultState.noData) {
+                return Center(
+                  child: Text(state.message),
+                );
               } else {
                 return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        MdiIcons.storeSearch,
-                        size: 75,
-                        color: Colors.brown,
-                      ),
-                      Text(
-                        'Cari restoran yang anda inginkan',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.brown,
-                        ),
-                      ),
-                    ],
-                  ),
+                  child: Text('root'),
                 );
               }
-            }
-          },
+            },
+          ),
         ),
       );
     } else {

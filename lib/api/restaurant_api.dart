@@ -46,8 +46,8 @@ class RestaurantAPI {
 
   Future<RestaurantReview> addReview(id, name, review) async {
     final response = await http.post(
-      Uri.parse("$_baseUrl$_review"),
-      headers: {"Content-Type": _headers},
+      Uri.parse('$_baseUrl$_review'),
+      headers: {'Content-Type': _headers},
       body: {
         "id": id,
         "name": name,

@@ -39,7 +39,7 @@ class _MainPageState extends State<MainPage> {
     try {
       result = await _connectivity.checkConnectivity();
     } on PlatformException catch (e) {
-      developer.log('Couldn\'t check connectivity status', error: e);
+      developer.log("Couldn't check connectivity status", error: e);
     }
 
     if (!mounted) {
@@ -119,33 +119,6 @@ class _MainPageState extends State<MainPage> {
               ),
             ];
           },
-          // body: FutureBuilder(
-          //   future: _futureRestaurantLlist,
-          //   builder: (context, snapshot) {
-          //     var restaurant = snapshot.data;
-          //     if (snapshot.connectionState != ConnectionState.done) {
-          //       return Center(
-          //         child: CircularProgressIndicator(),
-          //       );
-          //     } else {
-          //       if (snapshot.hasData) {
-          //         return ListView.builder(
-          //           itemCount: restaurant!.count.toInt(),
-          //           itemBuilder: (context, index) {
-          //             final restaurantItem = restaurant.restaurants[index];
-          //             return _buildRestaurantItem(context, restaurantItem);
-          //           },
-          //         );
-          //       } else if (snapshot.hasError) {
-          //         return Center(
-          //           child: Text("Data tidak berhasil dimuat"),
-          //         );
-          //       } else {
-          //         return Text('');
-          //       }
-          //     }
-          //   },
-          // ),
           body: Consumer<RestaurantListProvider>(
             builder: (context, state, _) {
               if (state.state == ResultState.loading) {

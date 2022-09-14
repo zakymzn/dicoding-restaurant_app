@@ -28,6 +28,19 @@ class MobileDetailPageWidget extends StatelessWidget {
               image: NetworkImage(
                 RestaurantAPI().largeImage(restaurantDetail.pictureId!),
               ),
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                } else {
+                  return SizedBox(
+                    height: 250,
+                    width: MediaQuery.of(context).size.width,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+              },
             ),
           ),
           Padding(

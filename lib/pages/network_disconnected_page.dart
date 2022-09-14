@@ -13,7 +13,7 @@ class NetworkDisconnectedPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
               Icon(
-                Icons.signal_cellular_connected_no_internet_0_bar,
+                Icons.signal_cellular_connected_no_internet_4_bar,
                 size: 50,
               ),
               Padding(
