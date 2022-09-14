@@ -35,7 +35,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                   return SizedBox(
                     height: 250,
                     width: MediaQuery.of(context).size.width,
-                    child: Center(
+                    child: const Center(
                       child: CircularProgressIndicator(),
                     ),
                   );
@@ -60,7 +60,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                       ),
                     ),
                     Consumer<FavoriteButtonProvider>(
-                      builder: (context, icon, _) => FavoriteButton(),
+                      builder: (context, icon, _) => const FavoriteButton(),
                     ),
                   ],
                 ),
@@ -84,7 +84,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                           ),
                           Text(
                             restaurantDetail.address!,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 14,
                             ),
                           ),
@@ -97,36 +97,36 @@ class MobileDetailPageWidget extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Row(
                     children: [
-                      Text(
+                      const Text(
                         "Rating",
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 5,
                       ),
                       Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 5, vertical: 2.5),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 5, vertical: 2.5),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(100),
                         ),
                         child: Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.star,
                               color: Colors.orangeAccent,
                               size: 14,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 5,
                             ),
                             Text(
                               restaurantDetail.rating.toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -215,7 +215,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Deskripsi',
                             style: TextStyle(
                               fontSize: 20,
@@ -247,7 +247,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Menu',
                             style: TextStyle(
                               fontSize: 20,
@@ -257,7 +257,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                           const SizedBox(
                             height: 10,
                           ),
-                          Text(
+                          const Text(
                             'Makanan',
                             style: TextStyle(
                               fontSize: 16,
@@ -306,7 +306,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                           const SizedBox(
                             height: 10,
                           ),
-                          Text(
+                          const Text(
                             'Minuman',
                             style: TextStyle(
                               fontSize: 16,
@@ -356,7 +356,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 ClipRRect(
@@ -368,7 +368,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Ulasan',
                             style: TextStyle(
                               fontSize: 20,
@@ -380,7 +380,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                           ),
                           ListView.builder(
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             itemCount: restaurantDetail.customerReviews!.length,
                             itemBuilder: (context, index) {
                               final review =
@@ -392,7 +392,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(20),
                                   child: Container(
                                     color: Colors.brown.shade200,
-                                    padding: EdgeInsets.all(10),
+                                    padding: const EdgeInsets.all(10),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -404,7 +404,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                                             Expanded(
                                               child: Text(
                                                 review.name,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.bold,
                                                 ),
@@ -412,18 +412,18 @@ class MobileDetailPageWidget extends StatelessWidget {
                                             ),
                                             Text(
                                               review.date,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 12,
                                               ),
                                             ),
                                           ],
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 5,
                                         ),
                                         Text(
                                           review.review,
-                                          style: TextStyle(fontSize: 14),
+                                          style: const TextStyle(fontSize: 14),
                                         ),
                                       ],
                                     ),
@@ -439,6 +439,9 @@ class MobileDetailPageWidget extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          const SizedBox(
+            height: 25,
           ),
         ],
       ),

@@ -19,7 +19,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment(0, -1),
+      alignment: const Alignment(0, -1),
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 50),
@@ -30,19 +30,19 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                 children: [
                   Text(
                     restaurantDetail.name!,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Consumer<FavoriteButtonProvider>(
-                    builder: (context, icon, _) => FavoriteButton(),
+                    builder: (context, icon, _) => const FavoriteButton(),
                   ),
                 ],
               ),
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.place,
                     size: 16,
                   ),
@@ -53,14 +53,14 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                       children: [
                         Text(
                           restaurantDetail.city!,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
                           restaurantDetail.address!,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                           ),
                         )
@@ -72,8 +72,8 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                     height: 25,
                     color: Colors.brown,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
                     child: Text(
                       'Rating',
                       style: TextStyle(
@@ -83,7 +83,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 5,
                       vertical: 2.5,
                     ),
@@ -93,17 +93,17 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.star,
                           color: Colors.orangeAccent,
                           size: 14,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Text(
                           restaurantDetail.rating.toString(),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
@@ -113,7 +113,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
@@ -127,7 +127,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                           child: Container(
                             color: Colors.white,
-                            padding: EdgeInsets.all(20),
+                            padding: const EdgeInsets.all(20),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -141,20 +141,35 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                           restaurantDetail.pictureId,
                                         ),
                                       ),
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        } else {
+                                          return Container(
+                                            height: 250,
+                                            color: Colors.brown.shade100,
+                                            child: const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            ),
+                                          );
+                                        }
+                                      },
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
-                                Text(
+                                const Text(
                                   'Kategori',
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 SizedBox(
@@ -202,35 +217,35 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: Container(
                             color: Colors.white,
-                            padding: EdgeInsets.all(20),
+                            padding: const EdgeInsets.all(20),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   'Menu',
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
-                                Text(
+                                const Text(
                                   'Makanan',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 SizedBox(
@@ -243,13 +258,14 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                       children: restaurantDetail.menus!.foods
                                           .map((foodMenu) {
                                         return Padding(
-                                          padding: EdgeInsets.all(5),
+                                          padding: const EdgeInsets.all(5),
                                           child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(100),
                                             child: Container(
                                               height: 100,
-                                              padding: EdgeInsets.symmetric(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
                                                 horizontal: 20,
                                               ),
                                               color: Colors.brown.shade200,
@@ -257,7 +273,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                                 child: Text(
                                                   foodMenu.name,
                                                   textAlign: TextAlign.center,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.bold,
                                                   ),
@@ -270,17 +286,17 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
-                                Text(
+                                const Text(
                                   'Minuman',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 SizedBox(
@@ -293,13 +309,14 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                       children: restaurantDetail.menus!.drinks
                                           .map((drinkMenu) {
                                         return Padding(
-                                          padding: EdgeInsets.all(5),
+                                          padding: const EdgeInsets.all(5),
                                           child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(100),
                                             child: Container(
                                               height: 100,
-                                              padding: EdgeInsets.symmetric(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
                                                 horizontal: 20,
                                               ),
                                               color: Colors.brown.shade200,
@@ -307,7 +324,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                                 child: Text(
                                                   drinkMenu.name,
                                                   textAlign: TextAlign.center,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.bold,
                                                   ),
@@ -327,7 +344,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
                   Expanded(
@@ -338,24 +355,24 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                           child: Container(
                             color: Colors.white,
-                            padding: EdgeInsets.all(20),
+                            padding: const EdgeInsets.all(20),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   'Deskripsi',
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 Text(
                                   restaurantDetail.description!,
                                   textAlign: TextAlign.justify,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 14,
                                   ),
                                 )
@@ -363,43 +380,43 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: Container(
                             color: Colors.white,
-                            padding: EdgeInsets.all(20),
+                            padding: const EdgeInsets.all(20),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   'Ulasan',
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 ListView.builder(
                                   shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   itemCount:
                                       restaurantDetail.customerReviews!.length,
                                   itemBuilder: (context, index) {
                                     final review = restaurantDetail
                                         .customerReviews![index];
                                     return Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 5),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 5),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(20),
                                         child: Container(
                                           color: Colors.brown.shade200,
-                                          padding: EdgeInsets.all(10),
+                                          padding: const EdgeInsets.all(10),
                                           child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
@@ -412,7 +429,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                                   Expanded(
                                                     child: Text(
                                                       review.name,
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                         fontSize: 12,
                                                         fontWeight:
                                                             FontWeight.bold,
@@ -421,18 +438,18 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                                                   ),
                                                   Text(
                                                     review.date,
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                       fontSize: 12,
                                                     ),
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 5,
                                               ),
                                               Text(
                                                 review.review,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontSize: 14,
                                                 ),
                                               )

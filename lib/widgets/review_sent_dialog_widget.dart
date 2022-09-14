@@ -1,12 +1,10 @@
-import 'dart:async';
-
 import 'package:dicoding_restaurant_app/pages/detail_page.dart';
 import 'package:flutter/material.dart';
 
 class ReviewSentDialogWidget extends StatefulWidget {
-  late String restaurantId;
+  final String restaurantId;
 
-  ReviewSentDialogWidget({super.key, required this.restaurantId});
+  const ReviewSentDialogWidget({super.key, required this.restaurantId});
 
   @override
   State<ReviewSentDialogWidget> createState() => _ReviewSentDialogWidgetState();
@@ -20,12 +18,17 @@ class _ReviewSentDialogWidgetState extends State<ReviewSentDialogWidget> {
         borderRadius: BorderRadius.circular(25),
       ),
       content: SizedBox(
-        height: 300,
+        height: 250,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image(
-              image: AssetImage('images/success.gif'),
+          children: const [
+            SizedBox(
+              width: 100,
+              height: 200,
+              child: Image(
+                image: AssetImage('images/success.gif'),
+                fit: BoxFit.cover,
+              ),
             ),
             Text(
               'Ulasan berhasil dikirim!',
@@ -45,7 +48,7 @@ class _ReviewSentDialogWidgetState extends State<ReviewSentDialogWidget> {
             Navigator.pushReplacementNamed(context, DetailPage.route,
                 arguments: widget.restaurantId);
           },
-          child: Text('OK'),
+          child: const Text('OK'),
         ),
       ],
     );

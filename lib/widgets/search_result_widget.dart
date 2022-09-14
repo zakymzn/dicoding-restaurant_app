@@ -24,7 +24,7 @@ class SearchResultWidget extends StatelessWidget {
               tag: restaurantFounded.id!,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Container(
+                child: SizedBox(
                   height: 50,
                   width: 50,
                   child: Image(
@@ -39,8 +39,8 @@ class SearchResultWidget extends StatelessWidget {
             title: Text(restaurantFounded.name!),
             subtitle: Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 5),
+                const Padding(
+                  padding: EdgeInsets.only(right: 5),
                   child: Icon(
                     Icons.place,
                     size: 14,
@@ -49,7 +49,7 @@ class SearchResultWidget extends StatelessWidget {
                 ),
                 Text(
                   restaurantFounded.city!,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                   ),

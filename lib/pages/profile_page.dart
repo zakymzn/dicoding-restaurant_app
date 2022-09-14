@@ -1,7 +1,6 @@
 import 'package:dicoding_restaurant_app/widgets/mobile_profile_page_widget.dart';
 import 'package:dicoding_restaurant_app/widgets/web_desktop_profile_page.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePage extends StatelessWidget {
   static const route = '/profile_page';
@@ -15,16 +14,16 @@ class ProfilePage extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
         ),
-        title: Text('Profil'),
+        title: const Text('Profil'),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth > 600) {
-            return WebDesktopProfilePage();
+            return const WebDesktopProfilePage();
           } else {
-            return MobileProfileScreen();
+            return const MobileProfileScreen();
           }
         },
       ),

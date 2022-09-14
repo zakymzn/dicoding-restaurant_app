@@ -1,13 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:developer' as developer;
 import 'package:dicoding_restaurant_app/pages/network_disconnected_page.dart';
 import 'package:dicoding_restaurant_app/pages/profile_page.dart';
-import 'package:dicoding_restaurant_app/providers/favorite_button_provider.dart';
 import 'package:dicoding_restaurant_app/pages/search_page.dart';
 import 'package:dicoding_restaurant_app/providers/restaurant_list_provider.dart';
-import 'package:http/http.dart' as http;
-import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -30,8 +26,6 @@ class _MainPageState extends State<MainPage> {
   ConnectivityResult _connectionStatus = ConnectivityResult.none;
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> subscription;
-
-  late Future<RestaurantList> _futureRestaurantLlist;
 
   Future<void> initConnectivity() async {
     late ConnectivityResult result;
@@ -59,7 +53,6 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     initConnectivity();
-    _futureRestaurantLlist = RestaurantAPI().list();
 
     subscription = Connectivity().onConnectivityChanged.listen((event) {
       setState(() {
@@ -100,14 +93,14 @@ class _MainPageState extends State<MainPage> {
                     onPressed: () {
                       Navigator.pushNamed(context, SearchPage.route);
                     },
-                    icon: Icon(Icons.search),
+                    icon: const Icon(Icons.search),
                   ),
                   IconButton(
                     onPressed: () {
                       Navigator.pushNamed(context, ProfilePage.route);
                     },
                     iconSize: 30,
-                    icon: Hero(
+                    icon: const Hero(
                       tag: 'profile',
                       child: CircleAvatar(
                         backgroundColor: Colors.transparent,
@@ -122,7 +115,7 @@ class _MainPageState extends State<MainPage> {
           body: Consumer<RestaurantListProvider>(
             builder: (context, state, _) {
               if (state.state == ResultState.loading) {
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
               } else if (state.state == ResultState.hasData) {
@@ -138,7 +131,7 @@ class _MainPageState extends State<MainPage> {
                   child: Text(state.message),
                 );
               } else {
-                return Center(
+                return const Center(
                   child: Text(''),
                 );
               }
@@ -147,7 +140,7 @@ class _MainPageState extends State<MainPage> {
         ),
       );
     } else {
-      return NetworkDisconnectedPage();
+      return const NetworkDisconnectedPage();
     }
   }
 

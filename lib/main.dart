@@ -1,11 +1,8 @@
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
-import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
 import 'package:dicoding_restaurant_app/pages/profile_page.dart';
 import 'package:dicoding_restaurant_app/providers/favorite_button_provider.dart';
 import 'package:dicoding_restaurant_app/pages/search_page.dart';
-import 'package:dicoding_restaurant_app/providers/restaurant_detail_provider.dart';
 import 'package:dicoding_restaurant_app/providers/restaurant_list_provider.dart';
-import 'package:dicoding_restaurant_app/providers/restaurant_search_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:dicoding_restaurant_app/pages/main_page.dart';
@@ -31,9 +28,6 @@ class RestaurantApp extends StatelessWidget {
             restaurantAPI: RestaurantAPI(),
           ),
         ),
-        ChangeNotifierProvider<RestaurantSearchProvider>(
-          create: (context) => RestaurantSearchProvider(),
-        )
       ],
       child: MaterialApp(
         title: "Restaurant App",

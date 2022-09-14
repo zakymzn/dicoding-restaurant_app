@@ -3,17 +3,15 @@ import 'dart:developer' as developer;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:dicoding_restaurant_app/data/profile_data.dart';
-import 'package:dicoding_restaurant_app/data/restaurant_review.dart';
-import 'package:dicoding_restaurant_app/pages/detail_page.dart';
 import 'package:dicoding_restaurant_app/widgets/review_sent_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class WriteReviewWidget extends StatefulWidget {
-  late String restaurantId;
+  final String restaurantId;
 
-  WriteReviewWidget({super.key, required this.restaurantId});
+  const WriteReviewWidget({super.key, required this.restaurantId});
 
   @override
   State<WriteReviewWidget> createState() => _WriteReviewWidgetState();
@@ -29,7 +27,10 @@ class _WriteReviewWidgetState extends State<WriteReviewWidget> {
 
   RestaurantAPI restaurantAPI = RestaurantAPI();
 
+  late String userName;
   late String review;
+
+  late FToast fToast;
 
   Future<void> initConnectivity() async {
     late ConnectivityResult result;
@@ -53,10 +54,42 @@ class _WriteReviewWidgetState extends State<WriteReviewWidget> {
     });
   }
 
+  _showMyCustomToast(Color color, Icon icon, String text, ToastGravity gravity,
+      Duration duration) {
+    Widget toast = Container(
+      width: 300,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25),
+        color: color,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          icon,
+          const SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: Text(text),
+          ),
+        ],
+      ),
+    );
+
+    fToast.showToast(
+      child: toast,
+      gravity: gravity,
+      toastDuration: duration,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
     initConnectivity();
+    fToast = FToast();
+    fToast.init(context);
 
     subscription = Connectivity().onConnectivityChanged.listen((event) {
       setState(() {
@@ -77,7 +110,7 @@ class _WriteReviewWidgetState extends State<WriteReviewWidget> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Bagikan pengalaman Anda'),
+      title: const Text('Bagikan pengalaman Anda'),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25),
       ),
@@ -86,8 +119,9 @@ class _WriteReviewWidgetState extends State<WriteReviewWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Nama :'),
+            const Text('Nama :'),
             TextField(
+              autofocus: true,
               controller: nameController,
               decoration: InputDecoration(
                 hintText: 'Nama Anda',
@@ -97,16 +131,15 @@ class _WriteReviewWidgetState extends State<WriteReviewWidget> {
               ),
               onChanged: (value) {
                 setState(() {
-                  name = value;
+                  userName = value;
                 });
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 25,
             ),
-            Text('Ulasan :'),
+            const Text('Ulasan :'),
             TextField(
-              autofocus: true,
               controller: reviewController,
               maxLines: 5,
               decoration: InputDecoration(
@@ -129,14 +162,14 @@ class _WriteReviewWidgetState extends State<WriteReviewWidget> {
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text('BATAL'),
+          child: const Text('BATAL'),
         ),
         TextButton(
           onPressed: () async {
-            if (name != '') {
+            if (userName != '') {
               if (review != '') {
                 RestaurantAPI()
-                    .addReview(widget.restaurantId, name, review)
+                    .addReview(widget.restaurantId, userName, review)
                     .then((value) {
                   setState(() {
                     restaurantAPI = value as RestaurantAPI;
@@ -152,34 +185,40 @@ class _WriteReviewWidgetState extends State<WriteReviewWidget> {
                     ),
                   );
                 } else {
-                  Fluttertoast.showToast(
-                    msg: 'Ulasan gagal dikirim\nPeriksa koneksi internet Anda',
-                    backgroundColor: Colors.brown,
-                    textColor: Colors.white,
-                    fontSize: 16,
-                    gravity: ToastGravity.CENTER,
+                  _showMyCustomToast(
+                    Colors.redAccent,
+                    const Icon(Icons.error, color: Colors.black),
+                    'Ulasan gagal dikirim\nPeriksa koneksi internet Anda',
+                    ToastGravity.CENTER,
+                    const Duration(seconds: 5),
                   );
                 }
               } else {
-                Fluttertoast.showToast(
-                  msg: 'Beri ulasan terlebih dahulu',
-                  backgroundColor: Colors.brown,
-                  textColor: Colors.white,
-                  fontSize: 16,
-                  gravity: ToastGravity.CENTER,
+                _showMyCustomToast(
+                  Colors.amberAccent,
+                  const Icon(
+                    Icons.warning_rounded,
+                    color: Colors.black,
+                  ),
+                  'Beri ulasan terlebih dahulu',
+                  ToastGravity.CENTER,
+                  const Duration(seconds: 5),
                 );
               }
             } else {
-              Fluttertoast.showToast(
-                msg: 'Kolom nama dan ulasan tidak boleh kosong',
-                backgroundColor: Colors.brown,
-                textColor: Colors.white,
-                fontSize: 16,
-                gravity: ToastGravity.CENTER,
+              _showMyCustomToast(
+                Colors.amberAccent,
+                const Icon(
+                  Icons.warning_rounded,
+                  color: Colors.black,
+                ),
+                'Kolom nama dan ulasan tidak boleh kosong',
+                ToastGravity.CENTER,
+                const Duration(seconds: 5),
               );
             }
           },
-          child: Text('KIRIM'),
+          child: const Text('KIRIM'),
         ),
       ],
     );

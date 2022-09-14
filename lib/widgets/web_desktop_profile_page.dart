@@ -1,7 +1,6 @@
 import 'package:dicoding_restaurant_app/data/profile_data.dart';
 import 'package:dicoding_restaurant_app/widgets/profile_url_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class WebDesktopProfilePage extends StatelessWidget {
   const WebDesktopProfilePage({super.key});
@@ -29,7 +28,8 @@ class WebDesktopProfilePage extends StatelessWidget {
                           child: CircleAvatar(
                             radius: MediaQuery.of(context).size.width / 10,
                             backgroundColor: Colors.transparent,
-                            backgroundImage: AssetImage('images/profile.jpg'),
+                            backgroundImage:
+                                const AssetImage('images/profile.jpg'),
                           ),
                         ),
                       ),
@@ -38,7 +38,7 @@ class WebDesktopProfilePage extends StatelessWidget {
                         child: Text(
                           name,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                             color: Colors.brown,
@@ -50,7 +50,7 @@ class WebDesktopProfilePage extends StatelessWidget {
                         child: Text(
                           email,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.brown,
@@ -62,7 +62,7 @@ class WebDesktopProfilePage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 20,
             ),
             Expanded(
