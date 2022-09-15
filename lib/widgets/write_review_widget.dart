@@ -27,8 +27,8 @@ class _WriteReviewWidgetState extends State<WriteReviewWidget> {
 
   RestaurantAPI restaurantAPI = RestaurantAPI();
 
-  late String userName;
-  late String review;
+  String userName = name;
+  String review = '';
 
   late FToast fToast;
 
@@ -139,20 +139,22 @@ class _WriteReviewWidgetState extends State<WriteReviewWidget> {
               height: 25,
             ),
             const Text('Ulasan :'),
-            TextField(
-              controller: reviewController,
-              maxLines: 5,
-              decoration: InputDecoration(
-                hintText: 'Bagaimana pengalaman Anda di restoran ini?',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
+            Expanded(
+              child: TextField(
+                controller: reviewController,
+                maxLines: 10,
+                decoration: InputDecoration(
+                  hintText: 'Bagaimana pengalaman Anda di restoran ini?',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                 ),
+                onChanged: (value) {
+                  setState(() {
+                    review = value;
+                  });
+                },
               ),
-              onChanged: (value) {
-                setState(() {
-                  review = value;
-                });
-              },
             )
           ],
         ),
