@@ -3,10 +3,13 @@ import 'dart:developer' as developer;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:dicoding_restaurant_app/pages/network_disconnected_page.dart';
+import 'package:dicoding_restaurant_app/providers/restaurant_search_provider.dart';
 import 'package:dicoding_restaurant_app/widgets/search_result_widget.dart';
+import 'package:dicoding_restaurant_app/providers/restaurant_search_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {
   static const route = '/search_page';
@@ -18,9 +21,11 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  TextEditingController textEditingController = TextEditingController();
+  // TextEditingController textEditingController = TextEditingController();
 
-  String? query;
+  // String? query;
+
+  late TextEditingController textEditingController;
 
   ConnectivityResult _connectionStatus = ConnectivityResult.none;
   final Connectivity _connectivity = Connectivity();
@@ -61,6 +66,12 @@ class _SearchPageState extends State<SearchPage> {
     super.initState();
     initConnectivity();
 
+    final RestaurantSearchProvider restaurantSearchProvider =
+        Provider.of<RestaurantSearchProvider>(context, listen: false);
+
+    textEditingController =
+        TextEditingController(text: restaurantSearchProvider.query);
+
     subscription = Connectivity().onConnectivityChanged.listen((event) {
       setState(() {
         _connectionStatus = event;
@@ -70,6 +81,8 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    String? query = Provider.of<RestaurantSearchProvider>(context).query;
+
     if (_connectionStatus != ConnectivityResult.none) {
       return Scaffold(
         appBar: AppBar(
@@ -77,26 +90,27 @@ class _SearchPageState extends State<SearchPage> {
             onPressed: () => Navigator.pop(context),
             icon: const Icon(Icons.arrow_back),
           ),
-          title: TextField(
-            controller: textEditingController,
-            autofocus: true,
-            decoration: const InputDecoration(
-              hintText: 'Cari restoran di sini',
-              hintStyle: TextStyle(
+          title: Consumer<RestaurantSearchProvider>(
+            builder: (context, value, _) => TextField(
+              controller: textEditingController,
+              autofocus: true,
+              decoration: const InputDecoration(
+                hintText: 'Cari restoran di sini',
+                hintStyle: TextStyle(
+                  color: Colors.white,
+                ),
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+              ),
+              style: const TextStyle(
                 color: Colors.white,
               ),
-              enabledBorder: InputBorder.none,
-              focusedBorder: InputBorder.none,
+              cursorColor: Colors.brown.shade100,
+              onChanged: (value) {
+                Provider.of<RestaurantSearchProvider>(context, listen: false)
+                    .searchRestaurant(value);
+              },
             ),
-            style: const TextStyle(
-              color: Colors.white,
-            ),
-            cursorColor: Colors.brown.shade100,
-            onChanged: (value) {
-              setState(() {
-                query = value;
-              });
-            },
           ),
           elevation: 2,
         ),
