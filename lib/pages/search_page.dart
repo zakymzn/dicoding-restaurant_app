@@ -4,6 +4,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:dicoding_restaurant_app/pages/network_disconnected_page.dart';
 import 'package:dicoding_restaurant_app/providers/restaurant_search_provider.dart';
+import 'package:dicoding_restaurant_app/providers/restaurant_search_result_provider.dart';
 import 'package:dicoding_restaurant_app/widgets/search_result_widget.dart';
 import 'package:dicoding_restaurant_app/providers/restaurant_search_provider.dart';
 import 'package:flutter/material.dart';
@@ -114,30 +115,31 @@ class _SearchPageState extends State<SearchPage> {
           ),
           elevation: 2,
         ),
-        body: FutureBuilder(
-          future: RestaurantAPI().search(query),
-          builder: (context, snapshot) {
-            var restaurant = snapshot.data;
-            if (snapshot.connectionState != ConnectionState.done) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    CircularProgressIndicator(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text('Sedang mencari restoran untuk Anda'),
-                  ],
-                ),
-              );
-            } else {
-              if (snapshot.hasData) {
-                if (restaurant!.founded > 0) {
+        body: ChangeNotifierProvider<RestaurantSearchResultProvider>(
+          create: (context) => RestaurantSearchResultProvider(
+            restaurantAPI: RestaurantAPI(),
+            query: query,
+          ),
+          child: Consumer<RestaurantSearchResultProvider>(
+            builder: (context, state, _) {
+              if (state.state == ResultState.loading) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text('Sedang mencari restoran untuk Anda'),
+                    ],
+                  ),
+                );
+              } else if (state.state == ResultState.hasData) {
+                if (state.search.founded > 0) {
                   return ListView.builder(
-                    itemCount: restaurant.founded.toInt(),
                     itemBuilder: (context, index) {
-                      final restaurantFounded = restaurant.restaurants[index];
+                      final restaurantFounded = state.search.restaurants[index];
                       return SearchResultWidget(
                           restaurantFounded: restaurantFounded);
                     },
@@ -146,7 +148,7 @@ class _SearchPageState extends State<SearchPage> {
                   return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Icon(
                           MdiIcons.emoticonConfused,
                           size: 75,
@@ -163,7 +165,7 @@ class _SearchPageState extends State<SearchPage> {
                             fontWeight: FontWeight.bold,
                             color: Colors.brown,
                           ),
-                        ),
+                        )
                       ],
                     ),
                   );
@@ -172,14 +174,17 @@ class _SearchPageState extends State<SearchPage> {
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(
                         MdiIcons.storeSearch,
                         size: 75,
                         color: Colors.brown,
                       ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Text(
-                        'Cari restoran yang anda inginkan',
+                        'Cari restoran yang Anda inginkan',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
@@ -191,9 +196,89 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 );
               }
-            }
-          },
+            },
+          ),
         ),
+        // body: FutureBuilder(
+        //   future: RestaurantAPI().search(query),
+        //   builder: (context, snapshot) {
+        //     var restaurant = snapshot.data;
+        //     if (snapshot.connectionState != ConnectionState.done) {
+        //       return Center(
+        //         child: Column(
+        //           mainAxisAlignment: MainAxisAlignment.center,
+        //           children: const [
+        //             CircularProgressIndicator(),
+        //             SizedBox(
+        //               height: 10,
+        //             ),
+        //             Text('Sedang mencari restoran untuk Anda'),
+        //           ],
+        //         ),
+        //       );
+        //     } else {
+        //       if (snapshot.hasData) {
+        //         if (restaurant!.founded > 0) {
+        //           return ListView.builder(
+        //             itemCount: restaurant.founded.toInt(),
+        //             itemBuilder: (context, index) {
+        //               final restaurantFounded = restaurant.restaurants[index];
+        //               return SearchResultWidget(
+        //                   restaurantFounded: restaurantFounded);
+        //             },
+        //           );
+        //         } else {
+        //           return Center(
+        //             child: Column(
+        //               mainAxisAlignment: MainAxisAlignment.center,
+        //               children: const [
+        //                 Icon(
+        //                   MdiIcons.emoticonConfused,
+        //                   size: 75,
+        //                   color: Colors.brown,
+        //                 ),
+        //                 SizedBox(
+        //                   height: 10,
+        //                 ),
+        //                 Text(
+        //                   'Restoran yang Anda cari tidak ditemukan',
+        //                   textAlign: TextAlign.center,
+        //                   style: TextStyle(
+        //                     fontSize: 16,
+        //                     fontWeight: FontWeight.bold,
+        //                     color: Colors.brown,
+        //                   ),
+        //                 ),
+        //               ],
+        //             ),
+        //           );
+        //         }
+        //       } else {
+        //         return Center(
+        //           child: Column(
+        //             mainAxisAlignment: MainAxisAlignment.center,
+        //             children: const [
+        //               Icon(
+        //                 MdiIcons.storeSearch,
+        //                 size: 75,
+        //                 color: Colors.brown,
+        //               ),
+        //               Text(
+        //                 'Cari restoran yang anda inginkan',
+        //                 textAlign: TextAlign.center,
+        //                 style: TextStyle(
+        //                   fontSize: 16,
+        //                   fontWeight: FontWeight.bold,
+        //                   color: Colors.brown,
+        //                 ),
+        //               ),
+        //             ],
+        //           ),
+        //         );
+        //       }
+        //     }
+        //   },
+        // ),
       );
     } else {
       return const NetworkDisconnectedPage();
