@@ -31,6 +31,13 @@ class SearchResultWidget extends StatelessWidget {
                     image: NetworkImage(
                       RestaurantAPI().smallImage(restaurantFounded.pictureId),
                     ),
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return CircularProgressIndicator();
+                      }
+                    },
                     fit: BoxFit.cover,
                   ),
                 ),
