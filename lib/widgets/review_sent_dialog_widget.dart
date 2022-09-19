@@ -20,11 +20,11 @@ class _ReviewSentDialogWidgetState extends State<ReviewSentDialogWidget> {
       content: SizedBox(
         height: 250,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: const [
             SizedBox(
-              width: 100,
-              height: 200,
+              width: 200,
               child: Image(
                 image: AssetImage('images/success.gif'),
                 fit: BoxFit.cover,
@@ -34,7 +34,7 @@ class _ReviewSentDialogWidgetState extends State<ReviewSentDialogWidget> {
               'Ulasan berhasil dikirim!',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             )

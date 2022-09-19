@@ -48,7 +48,7 @@ class _WebDesktopRestaurantListWidgetState
                             if (loadingProgress == null) {
                               return child;
                             } else {
-                              return SizedBox(
+                              return const SizedBox(
                                 width: 100,
                                 height: 80,
                                 child: Center(

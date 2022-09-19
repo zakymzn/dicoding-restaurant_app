@@ -35,7 +35,7 @@ class SearchResultWidget extends StatelessWidget {
                       if (loadingProgress == null) {
                         return child;
                       } else {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       }
                     },
                     fit: BoxFit.cover,

@@ -130,9 +130,7 @@ class _WriteReviewWidgetState extends State<WriteReviewWidget> {
                 ),
               ),
               onChanged: (value) {
-                setState(() {
-                  userName = value;
-                });
+                userName = value;
               },
             ),
             const SizedBox(
@@ -150,9 +148,7 @@ class _WriteReviewWidgetState extends State<WriteReviewWidget> {
                   ),
                 ),
                 onChanged: (value) {
-                  setState(() {
-                    review = value;
-                  });
+                  review = value;
                 },
               ),
             )
@@ -173,9 +169,7 @@ class _WriteReviewWidgetState extends State<WriteReviewWidget> {
                 RestaurantAPI()
                     .addReview(widget.restaurantId, userName, review)
                     .then((value) {
-                  setState(() {
-                    restaurantAPI = value as RestaurantAPI;
-                  });
+                  restaurantAPI = value as RestaurantAPI;
                 });
 
                 if (_connectionStatus != ConnectivityResult.none) {

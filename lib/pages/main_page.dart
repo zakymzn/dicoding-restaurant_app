@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'dart:developer' as developer;
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:provider/provider.dart';
 import 'package:dicoding_restaurant_app/pages/network_disconnected_page.dart';
 import 'package:dicoding_restaurant_app/pages/profile_page.dart';
 import 'package:dicoding_restaurant_app/pages/search_page.dart';
 import 'package:dicoding_restaurant_app/providers/restaurant_list_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dicoding_restaurant_app/pages/detail_page.dart';
 import 'package:dicoding_restaurant_app/widgets/mobile_restaurant_list_widget.dart';
 import 'package:dicoding_restaurant_app/widgets/web_desktop_restaurant_list_widget.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_list.dart';
-import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
   static const route = '/main_page';
@@ -122,8 +122,8 @@ class _MainPageState extends State<MainPage> {
                 return ListView.builder(
                   itemCount: state.list.restaurants.length,
                   itemBuilder: (context, index) {
-                    var restaurant = state.list.restaurants[index];
-                    return _buildRestaurantItem(context, restaurant);
+                    var restaurantList = state.list.restaurants[index];
+                    return _buildRestaurantItem(context, restaurantList);
                   },
                 );
               } else if (state.state == ResultState.noData) {
@@ -144,37 +144,24 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-  Widget _buildRestaurantItem(BuildContext context, Restaurant restaurant) {
+  Widget _buildRestaurantItem(BuildContext context, Restaurant restaurantList) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: GestureDetector(
         onTap: () => Navigator.pushNamed(
           context,
           DetailPage.route,
-          arguments: restaurant.id,
+          arguments: restaurantList.id,
         ),
         child: LayoutBuilder(builder: (context, constraints) {
           if (constraints.maxWidth > 600) {
-            return _webDesktopRestaurantList(context, restaurant);
+            return WebDesktopRestaurantListWidget(
+                restaurantList: restaurantList);
           } else {
-            return _mobileRestaurantLlist(context, restaurant);
+            return MobileRestaurantListWidget(restaurantList: restaurantList);
           }
         }),
       ),
-    );
-  }
-
-  Widget _mobileRestaurantLlist(
-      BuildContext context, Restaurant restaurantList) {
-    return MobileRestaurantListWidget(
-      restaurantList: restaurantList,
-    );
-  }
-
-  Widget _webDesktopRestaurantList(
-      BuildContext context, Restaurant restaurantList) {
-    return WebDesktopRestaurantListWidget(
-      restaurantList: restaurantList,
     );
   }
 }

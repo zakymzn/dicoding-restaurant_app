@@ -1,11 +1,11 @@
 import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:dicoding_restaurant_app/providers/restaurant_detail_provider.dart';
 import 'package:dicoding_restaurant_app/widgets/write_review_widget.dart';
-import 'package:flutter/material.dart';
 import 'package:dicoding_restaurant_app/widgets/mobile_detail_page_widget.dart';
 import 'package:dicoding_restaurant_app/widgets/web_desktop_detail_page_widget.dart';
-import 'package:provider/provider.dart';
 
 class DetailPage extends StatelessWidget {
   static const route = '/detail_page';

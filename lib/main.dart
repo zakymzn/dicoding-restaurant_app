@@ -30,7 +30,9 @@ class RestaurantApp extends StatelessWidget {
           ),
         ),
         ChangeNotifierProvider<RestaurantSearchProvider>(
-          create: (context) => RestaurantSearchProvider(),
+          create: (context) => RestaurantSearchProvider(
+            restaurantAPI: RestaurantAPI(),
+          ),
         ),
       ],
       child: MaterialApp(
