@@ -1,17 +1,13 @@
 import 'dart:async';
 import 'dart:developer' as developer;
+import 'package:dicoding_restaurant_app/pages/favorite_restaurant_page.dart';
+import 'package:dicoding_restaurant_app/pages/restaurant_list_page.dart';
+import 'package:dicoding_restaurant_app/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:provider/provider.dart';
 import 'package:dicoding_restaurant_app/pages/network_disconnected_page.dart';
-import 'package:dicoding_restaurant_app/pages/profile_page.dart';
 import 'package:dicoding_restaurant_app/pages/search_page.dart';
-import 'package:dicoding_restaurant_app/providers/restaurant_list_provider.dart';
-import 'package:dicoding_restaurant_app/pages/detail_page.dart';
-import 'package:dicoding_restaurant_app/widgets/mobile_restaurant_list_widget.dart';
-import 'package:dicoding_restaurant_app/widgets/web_desktop_restaurant_list_widget.dart';
-import 'package:dicoding_restaurant_app/data/restaurant_list.dart';
 
 class MainPage extends StatefulWidget {
   static const route = '/main_page';
@@ -23,6 +19,14 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  int currentPageIndex = 0;
+  final pages = [
+    RestaurantListPage(),
+    SearchPage(),
+    FavoriteRestaurantPage(),
+    SettingsPage(),
+  ];
+
   ConnectivityResult _connectionStatus = ConnectivityResult.none;
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> subscription;
@@ -71,97 +75,71 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     if (_connectionStatus != ConnectivityResult.none) {
       return Scaffold(
-        body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                pinned: true,
-                expandedHeight: 200,
-                elevation: 2,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Image.asset(
-                    "images/large_compressed.jpg",
-                    fit: BoxFit.cover,
-                  ),
-                  title: const Text(
-                    "Restaurant",
-                  ),
-                  titlePadding: const EdgeInsets.fromLTRB(20, 0, 0, 20),
-                ),
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, SearchPage.route);
-                    },
-                    icon: const Icon(Icons.search),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, ProfilePage.route);
-                    },
-                    iconSize: 30,
-                    icon: const Hero(
-                      tag: 'profile',
-                      child: CircleAvatar(
-                        backgroundColor: Colors.transparent,
-                        backgroundImage: AssetImage('images/profile.jpg'),
-                      ),
-                    ),
-                  ),
-                ],
+        body: pages[currentPageIndex],
+        bottomNavigationBar: NavigationBarTheme(
+          data: NavigationBarThemeData(
+            indicatorColor: Colors.brown.shade100,
+            iconTheme: MaterialStatePropertyAll(
+              IconThemeData(
+                color: Colors.white,
               ),
-            ];
-          },
-          body: Consumer<RestaurantListProvider>(
-            builder: (context, state, _) {
-              if (state.state == ResultState.loading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state.state == ResultState.hasData) {
-                return ListView.builder(
-                  itemCount: state.list.restaurants.length,
-                  itemBuilder: (context, index) {
-                    var restaurantList = state.list.restaurants[index];
-                    return _buildRestaurantItem(context, restaurantList);
-                  },
-                );
-              } else if (state.state == ResultState.noData) {
-                return Center(
-                  child: Text(state.message),
-                );
-              } else {
-                return const Center(
-                  child: Text(''),
-                );
-              }
+            ),
+            labelTextStyle: MaterialStatePropertyAll(
+              TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          child: NavigationBar(
+            onDestinationSelected: (int index) {
+              setState(() {
+                currentPageIndex = index;
+              });
             },
+            animationDuration: Duration(milliseconds: 500),
+            selectedIndex: currentPageIndex,
+            backgroundColor: Colors.brown.shade300,
+            destinations: [
+              NavigationDestination(
+                icon: Icon(Icons.home_outlined),
+                selectedIcon: Icon(
+                  Icons.home,
+                  color: Colors.brown,
+                ),
+                label: 'Restoran',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.search),
+                selectedIcon: Icon(
+                  Icons.search,
+                  color: Colors.brown,
+                ),
+                label: 'Cari',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.favorite_outline),
+                selectedIcon: Icon(
+                  Icons.favorite,
+                  color: Colors.brown,
+                ),
+                label: 'Favorit',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.settings_outlined),
+                selectedIcon: Icon(
+                  Icons.settings,
+                  color: Colors.brown,
+                ),
+                label: 'Settings',
+              ),
+            ],
           ),
         ),
       );
     } else {
-      return const NetworkDisconnectedPage();
+      return NetworkDisconnectedPage();
     }
-  }
-
-  Widget _buildRestaurantItem(BuildContext context, Restaurant restaurantList) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: GestureDetector(
-        onTap: () => Navigator.pushNamed(
-          context,
-          DetailPage.route,
-          arguments: restaurantList.id,
-        ),
-        child: LayoutBuilder(builder: (context, constraints) {
-          if (constraints.maxWidth > 600) {
-            return WebDesktopRestaurantListWidget(
-                restaurantList: restaurantList);
-          } else {
-            return MobileRestaurantListWidget(restaurantList: restaurantList);
-          }
-        }),
-      ),
-    );
   }
 }

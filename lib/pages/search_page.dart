@@ -10,8 +10,6 @@ import 'package:dicoding_restaurant_app/providers/restaurant_search_provider.dar
 import 'package:dicoding_restaurant_app/widgets/search_result_widget.dart';
 
 class SearchPage extends StatefulWidget {
-  static const route = '/search_page';
-
   const SearchPage({super.key});
 
   @override
@@ -78,14 +76,9 @@ class _SearchPageState extends State<SearchPage> {
     if (_connectionStatus != ConnectivityResult.none) {
       return Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.arrow_back),
-          ),
           title: Consumer<RestaurantSearchProvider>(
             builder: (context, state, _) => TextField(
               controller: textEditingController,
-              autofocus: true,
               decoration: const InputDecoration(
                 hintText: 'Cari restoran di sini',
                 hintStyle: TextStyle(
@@ -117,7 +110,14 @@ class _SearchPageState extends State<SearchPage> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text('Sedang mencari restoran untuk Anda'),
+                    Text(
+                      'Sedang mencari restoran untuk Anda',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.brown,
+                      ),
+                    ),
                   ],
                 ),
               );

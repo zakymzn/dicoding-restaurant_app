@@ -12,40 +12,37 @@ class MobileProfileScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Hero(
-                  tag: 'profile',
-                  child: CircleAvatar(
-                    backgroundColor: Colors.transparent,
-                    backgroundImage: AssetImage('images/profile.jpg'),
-                    radius: 35,
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name,
-                      style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.brown),
-                    ),
-                    Text(
-                      email,
-                      style: const TextStyle(fontSize: 13, color: Colors.brown),
-                    )
-                  ],
-                ),
-              ],
+            const Hero(
+              tag: 'profile',
+              child: CircleAvatar(
+                backgroundColor: Colors.transparent,
+                backgroundImage: AssetImage('images/profile.jpg'),
+                radius: 35,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              name,
+              style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.brown),
+            ),
+            Text(
+              email,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.brown,
+              ),
             ),
             const SizedBox(
               height: 20,
             ),
             ListView.builder(
               shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
               itemCount: socialMediaList.length,
               itemBuilder: (context, index) {
                 final SocialMedia socialMedia = socialMediaList[index];

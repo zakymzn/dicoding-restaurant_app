@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:dicoding_restaurant_app/widgets/mobile_profile_page_widget.dart';
-import 'package:dicoding_restaurant_app/widgets/web_desktop_profile_page.dart';
+import 'package:dicoding_restaurant_app/pages/mobile/mobile_profile_page_widget.dart';
+import 'package:dicoding_restaurant_app/pages/web_desktop/web_desktop_profile_page.dart';
 
 class ProfilePage extends StatelessWidget {
   static const route = '/profile_page';

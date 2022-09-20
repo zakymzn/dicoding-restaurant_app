@@ -121,7 +121,6 @@ class _WriteReviewWidgetState extends State<WriteReviewWidget> {
           children: [
             const Text('Nama :'),
             TextField(
-              autofocus: true,
               controller: nameController,
               decoration: InputDecoration(
                 hintText: 'Nama Anda',
@@ -140,6 +139,7 @@ class _WriteReviewWidgetState extends State<WriteReviewWidget> {
             Expanded(
               child: TextField(
                 controller: reviewController,
+                autofocus: true,
                 maxLines: 10,
                 decoration: InputDecoration(
                   hintText: 'Bagaimana pengalaman Anda di restoran ini?',
