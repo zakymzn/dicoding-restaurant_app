@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:dicoding_restaurant_app/pages/mobile/mobile_detail_page_widget.dart';
-import 'package:dicoding_restaurant_app/pages/web_desktop/web_desktop_detail_page_widget.dart';
+import 'package:dicoding_restaurant_app/pages/mobile/mobile_detail_page.dart';
+import 'package:dicoding_restaurant_app/pages/web_desktop/web_desktop_detail_page.dart';
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:dicoding_restaurant_app/providers/restaurant_detail_provider.dart';
 import 'package:dicoding_restaurant_app/widgets/write_review_widget.dart';
@@ -51,10 +51,10 @@ class DetailPage extends StatelessWidget {
                 child: LayoutBuilder(builder: (context, constraints) {
                   if (constraints.maxWidth > 800) {
                     return WebDesktopDetailPageWidget(
-                        restaurantDetail: state.detail.restaurant);
+                        restaurantDetail: state.detail);
                   } else {
                     return MobileDetailPageWidget(
-                        restaurantDetail: state.detail.restaurant);
+                        restaurantDetail: state.detail);
                   }
                 }),
               ),

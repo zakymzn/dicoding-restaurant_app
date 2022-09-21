@@ -3,6 +3,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 String name = "Ma'mur Zaky Nurrokhman";
 String email = "mamurzakynurrokhman@gmail.com";
+String profileImage = "images/profile.jpg";
 
 class SocialMedia {
   String socialMediaName;

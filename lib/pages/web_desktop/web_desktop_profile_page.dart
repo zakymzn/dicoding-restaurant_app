@@ -28,8 +28,7 @@ class WebDesktopProfilePage extends StatelessWidget {
                           child: CircleAvatar(
                             radius: MediaQuery.of(context).size.width / 10,
                             backgroundColor: Colors.transparent,
-                            backgroundImage:
-                                const AssetImage('images/profile.jpg'),
+                            backgroundImage: AssetImage(profileImage),
                           ),
                         ),
                       ),

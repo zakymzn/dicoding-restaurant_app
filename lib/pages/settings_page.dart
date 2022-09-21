@@ -20,10 +20,10 @@ class SettingsPage extends StatelessWidget {
               background: Container(
                 color: Colors.brown.shade200,
               ),
-              title: Text(
+              title: const Text(
                 'Settings',
               ),
-              titlePadding: EdgeInsets.fromLTRB(20, 0, 0, 20),
+              titlePadding: const EdgeInsets.fromLTRB(20, 0, 0, 20),
             ),
           )
         ];
@@ -41,11 +41,11 @@ class SettingsPage extends StatelessWidget {
                     tag: 'profile',
                     child: CircleAvatar(
                       backgroundColor: Colors.transparent,
-                      backgroundImage: AssetImage('images/profile.jpg'),
+                      backgroundImage: AssetImage(profileImage),
                       radius: 35,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
                   Column(
@@ -72,14 +72,14 @@ class SettingsPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Container(
               height: 64,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: BorderDirectional(
                   bottom: BorderSide(
                     width: 1,
@@ -93,15 +93,15 @@ class SettingsPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.notifications,
                         color: Colors.brown,
                         size: 30,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
-                      Text(
+                      const Text(
                         'Notifikasi',
                         style: TextStyle(
                           fontSize: 16,

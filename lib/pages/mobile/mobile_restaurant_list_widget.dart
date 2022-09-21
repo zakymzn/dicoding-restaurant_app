@@ -87,7 +87,7 @@ class _MobileRestaurantListWidgetState
                             widget.restaurantList.city!,
                             style: const TextStyle(
                               fontSize: 14,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],

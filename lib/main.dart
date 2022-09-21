@@ -1,5 +1,7 @@
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
+import 'package:dicoding_restaurant_app/db/database_helper.dart';
 import 'package:dicoding_restaurant_app/pages/profile_page.dart';
+import 'package:dicoding_restaurant_app/providers/database_provider.dart';
 import 'package:dicoding_restaurant_app/providers/favorite_button_provider.dart';
 import 'package:dicoding_restaurant_app/providers/restaurant_list_provider.dart';
 import 'package:dicoding_restaurant_app/providers/restaurant_search_provider.dart';
@@ -37,6 +39,10 @@ class RestaurantApp extends StatelessWidget {
         ChangeNotifierProvider<SettingsProvider>(
           create: (context) => SettingsProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) =>
+              DatabaseProvider(databaseHelper: DatabaseHelper()),
+        )
       ],
       child: MaterialApp(
         title: "Restaurant App",

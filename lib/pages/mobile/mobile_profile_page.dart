@@ -12,15 +12,15 @@ class MobileProfileScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         child: Column(
           children: [
-            const Hero(
+            Hero(
               tag: 'profile',
               child: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                backgroundImage: AssetImage('images/profile.jpg'),
+                backgroundImage: AssetImage(profileImage),
                 radius: 35,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
@@ -42,7 +42,7 @@ class MobileProfileScreen extends StatelessWidget {
             ),
             ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: socialMediaList.length,
               itemBuilder: (context, index) {
                 final SocialMedia socialMedia = socialMediaList[index];
