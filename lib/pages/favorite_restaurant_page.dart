@@ -70,7 +70,7 @@ class FavoriteRestaurantPage extends StatelessWidget {
   }
 
   Widget _buildFavoritedRestaurantItem(
-      BuildContext context, RestaurantDetail favoritedRestaurantList) {
+      BuildContext context, Restaurant favoritedRestaurantList) {
     return Consumer<DatabaseProvider>(
       builder: (context, provider, child) => FutureBuilder<bool>(
         builder: (context, snapshot) {
@@ -81,7 +81,7 @@ class FavoriteRestaurantPage extends StatelessWidget {
               onTap: () => Navigator.pushNamed(
                 context,
                 DetailPage.route,
-                arguments: favoritedRestaurantList.restaurant.id,
+                arguments: favoritedRestaurantList.id,
               ),
               child: SizedBox(
                 height: 100,
@@ -101,12 +101,11 @@ class FavoriteRestaurantPage extends StatelessWidget {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
                                   child: Hero(
-                                    tag: favoritedRestaurantList.restaurant.id!,
+                                    tag: favoritedRestaurantList.id!,
                                     child: Image(
                                       image: NetworkImage(
                                         RestaurantAPI().smallImage(
-                                            favoritedRestaurantList
-                                                .restaurant.pictureId),
+                                            favoritedRestaurantList.pictureId),
                                       ),
                                       fit: BoxFit.cover,
                                       width: 100,
@@ -138,7 +137,7 @@ class FavoriteRestaurantPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      favoritedRestaurantList.restaurant.name!,
+                                      favoritedRestaurantList.name!,
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
@@ -155,8 +154,7 @@ class FavoriteRestaurantPage extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                          favoritedRestaurantList
-                                              .restaurant.city!,
+                                          favoritedRestaurantList.city!,
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
@@ -174,8 +172,7 @@ class FavoriteRestaurantPage extends StatelessWidget {
                                             color: Colors.orangeAccent,
                                           ),
                                         ),
-                                        Text(favoritedRestaurantList
-                                            .restaurant.rating
+                                        Text(favoritedRestaurantList.rating
                                             .toString())
                                       ],
                                     )
@@ -188,7 +185,7 @@ class FavoriteRestaurantPage extends StatelessWidget {
                             onPressed: () {
                               if (isFavorited == true) {
                                 return provider.removeFavorite(
-                                    favoritedRestaurantList.restaurant.id!);
+                                    favoritedRestaurantList.id!);
                               } else {
                                 return provider
                                     .addFavorite(favoritedRestaurantList);

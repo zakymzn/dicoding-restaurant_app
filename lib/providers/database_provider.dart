@@ -13,11 +13,11 @@ class DatabaseProvider extends ChangeNotifier {
 
   late ResultState _state;
   String _message = '';
-  List<RestaurantDetail> _favorited = [];
+  List<Restaurant> _favorited = [];
 
   ResultState get state => _state;
   String get message => _message;
-  List<RestaurantDetail> get favorited => _favorited;
+  List<Restaurant> get favorited => _favorited;
 
   void _getFavorite() async {
     _favorited = await databaseHelper.getFavorite();
@@ -30,7 +30,7 @@ class DatabaseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addFavorite(RestaurantDetail restaurantDetail) async {
+  void addFavorite(Restaurant restaurantDetail) async {
     try {
       await databaseHelper.addFavorite(restaurantDetail);
       _getFavorite();

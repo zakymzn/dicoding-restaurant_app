@@ -51,10 +51,10 @@ class DetailPage extends StatelessWidget {
                 child: LayoutBuilder(builder: (context, constraints) {
                   if (constraints.maxWidth > 800) {
                     return WebDesktopDetailPageWidget(
-                        restaurantDetail: state.detail);
+                        restaurantDetail: state.detail.restaurant);
                   } else {
                     return MobileDetailPageWidget(
-                        restaurantDetail: state.detail);
+                        restaurantDetail: state.detail.restaurant);
                   }
                 }),
               ),
