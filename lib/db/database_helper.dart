@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
@@ -45,7 +47,7 @@ class DatabaseHelper {
     List<Map<String, dynamic>> results =
         await db!.query(_tableFavoritedRestaurant);
 
-    return results.map((e) => e.toString()).toList();
+    return results.map((e) => e['id'] as String).toList();
   }
 
   Future<Map> getFavoriteById(String id) async {

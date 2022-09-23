@@ -81,6 +81,7 @@ class FavoriteRestaurantPage extends StatelessWidget {
       String favoritedRestaurantList,
       bool isFavorited,
       DatabaseProvider provider) {
+    print(favoritedRestaurantList);
     return ChangeNotifierProvider<RestaurantDetailProvider>(
       create: (context) => RestaurantDetailProvider(
         restaurantAPI: RestaurantAPI(),
