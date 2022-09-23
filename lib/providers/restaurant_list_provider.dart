@@ -1,9 +1,8 @@
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_list.dart';
+import 'package:dicoding_restaurant_app/utility/result_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-enum ResultState { loading, noData, hasData, error }
 
 class RestaurantListProvider extends ChangeNotifier {
   final RestaurantAPI restaurantAPI;

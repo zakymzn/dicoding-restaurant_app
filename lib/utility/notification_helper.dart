@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:dicoding_restaurant_app/data/restaurant_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';

@@ -47,7 +47,7 @@ class WebDesktopDetailPageWidget extends StatelessWidget {
                               )
                             : IconButton(
                                 onPressed: () =>
-                                    provider.addFavorite(restaurantDetail),
+                                    provider.addFavorite(restaurantDetail.id!),
                                 icon: Icon(Icons.favorite_border),
                               );
                       },

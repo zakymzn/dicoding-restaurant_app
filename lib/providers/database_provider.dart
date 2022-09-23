@@ -1,8 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/foundation.dart';
 import 'package:dicoding_restaurant_app/db/database_helper.dart';
-import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
-
-enum ResultState { loading, hasData, noData, error }
+import 'package:dicoding_restaurant_app/utility/result_state.dart';
 
 class DatabaseProvider extends ChangeNotifier {
   final DatabaseHelper databaseHelper;
@@ -11,13 +11,13 @@ class DatabaseProvider extends ChangeNotifier {
     _getFavorite();
   }
 
-  late ResultState _state;
+  ResultState? _state;
   String _message = '';
-  List<Restaurant> _favorited = [];
+  List<String> _favorited = [];
 
-  ResultState get state => _state;
+  ResultState? get state => _state;
   String get message => _message;
-  List<Restaurant> get favorited => _favorited;
+  List<String> get favorited => _favorited;
 
   void _getFavorite() async {
     _favorited = await databaseHelper.getFavorite();
@@ -30,9 +30,9 @@ class DatabaseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addFavorite(Restaurant restaurantDetail) async {
+  void addFavorite(String favoritedRestaurantId) async {
     try {
-      await databaseHelper.addFavorite(restaurantDetail);
+      await databaseHelper.addFavorite(favoritedRestaurantId);
       _getFavorite();
     } catch (e) {
       _state = ResultState.error;
@@ -43,7 +43,7 @@ class DatabaseProvider extends ChangeNotifier {
 
   void removeFavorite(String id) async {
     try {
-      await databaseHelper.removeFavorite(id);
+      await databaseHelper.removeFavorited(id);
     } catch (e) {
       _state = ResultState.error;
       _message = 'Error: $e';

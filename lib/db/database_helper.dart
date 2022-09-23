@@ -1,5 +1,3 @@
-// import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
-import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
@@ -12,40 +10,21 @@ class DatabaseHelper {
 
   factory DatabaseHelper() => _instance ?? DatabaseHelper._internal();
 
-  static const String _tableRestaurant = 'restaurant';
-  final String _columnId = 'id';
-  final String _columnName = 'name';
-  final String _columnDescription = 'description';
-  final String _columnCity = 'city';
-  final String _columnAddress = 'address';
-  final String _columnPictureId = 'pictureId';
-  final String _columnCategories = 'categories';
-  final String _columnFoodMenus = 'food_menus';
-  final String _columnDrinkMenus = 'drink_menus';
-  final String _columnRating = 'rating';
-  final String _columnCustomerReviews = 'customerReviews';
+  static const String _tableFavoritedRestaurant = 'favorited_restaurant';
+  final String _columnRestaurantId = 'id';
+  // final String _columnIsFavorited = 'isFavorited';
 
   Future<Database> _initializeDb() async {
     var path = await getDatabasesPath();
     var db = openDatabase(
-      '$path/favorite_restaurant.db',
+      '$path/favorited_restaurant.db',
       onCreate: (db, version) async {
-        await db.execute('''CREATE TABLE $_tableRestaurant (
-          $_columnId TEXT PRIMARY KEY,
-          $_columnName TEXT,
-          $_columnDescription TEXT,
-          $_columnCity TEXT,
-          $_columnAddress TEXT,
-          $_columnPictureId TEXT,
-          $_columnCategories TEXT,
-          $_columnFoodMenus TEXT,
-          $_columnDrinkMenus TEXT,
-          $_columnRating NUMERIC,
-          $_columnCustomerReviews TEXT
-        )''');
+        await db.execute(
+            'CREATE TABLE $_tableFavoritedRestaurant ($_columnRestaurantId TEXT PRIMARY KEY NOT NULL)');
       },
       version: 1,
     );
+
     return db;
   }
 
@@ -55,48 +34,26 @@ class DatabaseHelper {
     return _database;
   }
 
-  Future<void> addFavorite(Restaurant restaurantDetail) async {
+  Future<void> addFavorite(String favoritedRestaurantId) async {
     final db = await database;
-    await db!.rawInsert('''INSERT INTO $_tableRestaurant(
-          $_columnId,
-          $_columnName,
-          $_columnDescription,
-          $_columnCity,
-          $_columnAddress,
-          $_columnPictureId,
-          $_columnCategories,
-          $_columnFoodMenus,
-          $_columnDrinkMenus,
-          $_columnRating,
-          $_columnCustomerReviews
-          ) VALUES(
-            ${restaurantDetail.id!},
-            ${restaurantDetail.name!},
-            ${restaurantDetail.description!},
-            ${restaurantDetail.city!},
-            ${restaurantDetail.address!},
-            ${restaurantDetail.pictureId!},
-            ${restaurantDetail.categories!.map((e) => e.name).toList()},
-            ${restaurantDetail.menus!.foods.map((e) => e.name).toList()},
-            ${restaurantDetail.menus!.drinks.map((e) => e.name).toList()},
-            ${restaurantDetail.rating!},
-            ${restaurantDetail.customerReviews!}
-            )''');
+    await db!.rawInsert(
+        'INSERT INTO $_tableFavoritedRestaurant($_columnRestaurantId) VALUES ("$favoritedRestaurantId")');
   }
 
-  Future<List<Restaurant>> getFavorite() async {
+  Future<List<String>> getFavorite() async {
     final db = await database;
-    List<Map<String, dynamic>> results = await db!.query(_tableRestaurant);
+    List<Map<String, dynamic>> results =
+        await db!.query(_tableFavoritedRestaurant);
 
-    return results.map((e) => Restaurant.fromJson(e)).toList();
+    return results.map((e) => e.toString()).toList();
   }
 
   Future<Map> getFavoriteById(String id) async {
     final db = await database;
 
     List<Map<String, dynamic>> results = await db!.query(
-      _tableRestaurant,
-      where: '$_columnId = ?',
+      _tableFavoritedRestaurant,
+      where: '$_columnRestaurantId = ?',
       whereArgs: [id],
     );
 
@@ -107,12 +64,12 @@ class DatabaseHelper {
     }
   }
 
-  Future<void> removeFavorite(String id) async {
+  Future<void> removeFavorited(String id) async {
     final db = await database;
 
     await db!.delete(
-      _tableRestaurant,
-      where: '$_columnId = ?',
+      _tableFavoritedRestaurant,
+      where: '$_columnRestaurantId = ?',
       whereArgs: [id],
     );
   }

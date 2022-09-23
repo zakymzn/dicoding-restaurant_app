@@ -72,7 +72,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                           } else {
                             return IconButton(
                               onPressed: () =>
-                                  provider.addFavorite(restaurantDetail),
+                                  provider.addFavorite(restaurantDetail.id!),
                               icon: Icon(Icons.favorite_border),
                             );
                           }

@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:dicoding_restaurant_app/utility/result_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dicoding_restaurant_app/pages/mobile/mobile_detail_page.dart';
