@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 import 'package:dicoding_restaurant_app/pages/favorite_restaurant_page.dart';
-import 'package:dicoding_restaurant_app/pages/restaurant_list_page.dart';
+import 'package:dicoding_restaurant_app/pages/list_page.dart';
 import 'package:dicoding_restaurant_app/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

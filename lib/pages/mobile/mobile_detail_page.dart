@@ -1,5 +1,6 @@
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:dicoding_restaurant_app/providers/database_provider.dart';
+import 'package:dicoding_restaurant_app/utility/scroll_configuration.dart';
 import 'package:flutter/material.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
 import 'package:dicoding_restaurant_app/pages/detail_page.dart';
@@ -197,8 +198,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 20),
                                         color: Colors.brown.shade200,
-                                        child: Align(
-                                          alignment: const Alignment(0, 0),
+                                        child: Center(
                                           child: Text(
                                             categories.name,
                                             textAlign: TextAlign.center,

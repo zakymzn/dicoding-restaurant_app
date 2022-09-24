@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:dicoding_restaurant_app/utility/result_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -83,12 +82,4 @@ class DetailPage extends StatelessWidget {
       ),
     );
   }
-}
-
-class MyCustomScrollBehavior extends MaterialScrollBehavior {
-  @override
-  Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.mouse,
-        PointerDeviceKind.touch,
-      };
 }
