@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:developer' as developer;
+import 'package:dicoding_restaurant_app/pages/detail_page.dart';
 import 'package:dicoding_restaurant_app/pages/favorite_restaurant_page.dart';
 import 'package:dicoding_restaurant_app/pages/list_page.dart';
 import 'package:dicoding_restaurant_app/pages/settings_page.dart';
+import 'package:dicoding_restaurant_app/utility/notification_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -26,6 +28,8 @@ class _MainPageState extends State<MainPage> {
     FavoriteRestaurantPage(),
     SettingsPage(),
   ];
+
+  final NotificationHelper _notificationHelper = NotificationHelper();
 
   ConnectivityResult _connectionStatus = ConnectivityResult.none;
   final Connectivity _connectivity = Connectivity();
@@ -57,7 +61,8 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     initConnectivity();
-
+    _notificationHelper.configureSelectNotificationSubject(
+        context, DetailPage.route);
     subscription = Connectivity().onConnectivityChanged.listen((event) {
       setState(() {
         _connectionStatus = event;
@@ -68,6 +73,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void dispose() {
     super.dispose();
+    selectNotificationSubject.close();
     subscription.cancel();
   }
 

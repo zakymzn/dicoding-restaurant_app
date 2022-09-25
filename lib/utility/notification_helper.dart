@@ -5,7 +5,6 @@ import 'dart:typed_data';
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_list.dart';
 import 'package:dicoding_restaurant_app/pages/detail_page.dart';
-import 'package:dicoding_restaurant_app/utility/custom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
@@ -90,16 +89,22 @@ class NotificationHelper {
         NotificationDetails(android: androidPlatformChannelSpecifics);
 
     await flutterLocalNotificationsPlugin.show(
-        0,
-        'Ada rekomendasi restoran untukmu',
-        'Cek sekarang',
-        platformChannelSpecifics,
-        payload: json.encode(randomRestaurant.toJson()));
+      0,
+      'Ada rekomendasi restoran untukmu',
+      'Cek sekarang',
+      platformChannelSpecifics,
+      payload: json.encode(
+        restaurantList.toJson(),
+      ),
+    );
+  }
 
+  void configureSelectNotificationSubject(BuildContext context, String route) {
     selectNotificationSubject.stream.listen((String payload) async {
       var data = RestaurantList.fromJson(json.decode(payload));
-      var restaurant = data.restaurants[randomRestaurantList];
-      Navigation.intentWithData(DetailPage.route, restaurant.id!);
+      var restaurant =
+          data.restaurants[Random().nextInt(data.restaurants.length)];
+      Navigator.pushNamed(context, route, arguments: restaurant.id);
     });
   }
 }

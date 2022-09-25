@@ -1,4 +1,6 @@
+import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:dicoding_restaurant_app/data/profile_data.dart';
+import 'package:dicoding_restaurant_app/data/restaurant_list.dart';
 import 'package:dicoding_restaurant_app/main.dart';
 import 'package:dicoding_restaurant_app/pages/profile_page.dart';
 import 'package:dicoding_restaurant_app/providers/scheduling_provider.dart';
@@ -118,9 +120,8 @@ class SettingsPage extends StatelessWidget {
           Center(
             child: ElevatedButton(
               onPressed: () async {
-                await NotificationHelper().showNotification(
-                  flutterLocalNotificationsPlugin,
-                );
+                await NotificationHelper()
+                    .showNotification(flutterLocalNotificationsPlugin);
               },
               child: Text('Tampilkan notifikasi sekarang juga!'),
             ),

@@ -24,7 +24,6 @@ class BackgroundService {
   static Future<void> callback() async {
     print('Notification coming');
     final NotificationHelper notificationHelper = NotificationHelper();
-    // var result = await RestaurantAPI().list();
     await notificationHelper.showNotification(flutterLocalNotificationsPlugin);
 
     _uiSendPort ??= IsolateNameServer.lookupPortByName(_isolateName);
