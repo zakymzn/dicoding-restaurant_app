@@ -1,3 +1,4 @@
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:dicoding_restaurant_app/db/database_helper.dart';
 import 'package:dicoding_restaurant_app/pages/profile_page.dart';
@@ -5,14 +6,31 @@ import 'package:dicoding_restaurant_app/providers/database_provider.dart';
 import 'package:dicoding_restaurant_app/providers/favorite_button_provider.dart';
 import 'package:dicoding_restaurant_app/providers/restaurant_list_provider.dart';
 import 'package:dicoding_restaurant_app/providers/restaurant_search_provider.dart';
+import 'package:dicoding_restaurant_app/providers/scheduling_provider.dart';
 import 'package:dicoding_restaurant_app/providers/settings_provider.dart';
+import 'package:dicoding_restaurant_app/utility/background_service.dart';
+import 'package:dicoding_restaurant_app/utility/notification_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:dicoding_restaurant_app/pages/main_page.dart';
 import 'package:dicoding_restaurant_app/pages/detail_page.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final NotificationHelper _notificationHelper = NotificationHelper();
+  final BackgroundService _service = BackgroundService();
+
+  _service.initializeIsolate();
+
+  await AndroidAlarmManager.initialize();
+  await _notificationHelper.initNotifications(flutterLocalNotificationsPlugin);
+
   runApp(const RestaurantApp());
 }
 
@@ -42,7 +60,10 @@ class RestaurantApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) =>
               DatabaseProvider(databaseHelper: DatabaseHelper()),
-        )
+        ),
+        ChangeNotifierProvider<SchedulingProvider>(
+          create: (context) => SchedulingProvider(),
+        ),
       ],
       child: MaterialApp(
         title: "Restaurant App",

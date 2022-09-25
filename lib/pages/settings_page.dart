@@ -1,7 +1,11 @@
 import 'package:dicoding_restaurant_app/data/profile_data.dart';
+import 'package:dicoding_restaurant_app/main.dart';
 import 'package:dicoding_restaurant_app/pages/profile_page.dart';
+import 'package:dicoding_restaurant_app/providers/scheduling_provider.dart';
 import 'package:dicoding_restaurant_app/providers/settings_provider.dart';
+import 'package:dicoding_restaurant_app/utility/notification_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -75,53 +79,50 @@ class SettingsPage extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Container(
-              height: 64,
-              decoration: const BoxDecoration(
-                border: BorderDirectional(
-                  bottom: BorderSide(
-                    width: 1,
-                    color: Colors.brown,
+          Consumer<SettingsProvider>(
+            builder: (context, provider, child) {
+              return ListTile(
+                leading: Icon(
+                  Icons.notifications,
+                  color: Colors.brown,
+                  size: 30,
+                ),
+                title: Text(
+                  'Notifikasi rekomendasi restoran',
+                  style: TextStyle(
+                    fontSize: 16,
                   ),
                 ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const Icon(
-                        Icons.notifications,
-                        color: Colors.brown,
-                        size: 30,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const Text(
-                        'Notifikasi',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Consumer<SettingsProvider>(
-                    builder: (context, notification, _) {
-                      return Switch.adaptive(
-                        value: notification.notificationSwitchCondition,
-                        onChanged: (value) async {
-                          notification.changeNotificationSwitchCondition(value);
-                        },
-                      );
-                    },
-                  ),
-                ],
-              ),
+                trailing: Consumer<SchedulingProvider>(
+                  builder: (context, scheduled, child) {
+                    return Switch.adaptive(
+                      value: provider.notificationSwitchCondition,
+                      onChanged: (value) async {
+                        scheduled.scheduledNotification(value);
+                        provider.changeNotificationSwitchCondition(value);
+                        if (value == true) {
+                          Fluttertoast.showToast(
+                            msg: 'Rekomendasi diaktifkan',
+                            gravity: ToastGravity.SNACKBAR,
+                            backgroundColor: Colors.brown,
+                            textColor: Colors.white,
+                          );
+                        }
+                      },
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+          Center(
+            child: ElevatedButton(
+              onPressed: () async {
+                await NotificationHelper().showNotification(
+                  flutterLocalNotificationsPlugin,
+                );
+              },
+              child: Text('Tampilkan notifikasi sekarang juga!'),
             ),
           ),
         ],

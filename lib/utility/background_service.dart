@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'dart:isolate';
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
+import 'package:dicoding_restaurant_app/main.dart';
 import 'package:dicoding_restaurant_app/utility/notification_helper.dart';
 
 final ReceivePort port = ReceivePort();
@@ -23,6 +24,10 @@ class BackgroundService {
   static Future<void> callback() async {
     print('Notification coming');
     final NotificationHelper notificationHelper = NotificationHelper();
-    var result = await RestaurantAPI().list();
+    // var result = await RestaurantAPI().list();
+    await notificationHelper.showNotification(flutterLocalNotificationsPlugin);
+
+    _uiSendPort ??= IsolateNameServer.lookupPortByName(_isolateName);
+    _uiSendPort?.send(null);
   }
 }
