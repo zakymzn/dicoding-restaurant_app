@@ -41,7 +41,7 @@ class FavoriteRestaurantPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 var favoritedRestaurantList = provider.favorited[index];
                 return FavoriteRestaurantWidget(
-                    favoritedRestaurantid: favoritedRestaurantList);
+                    favoritedRestaurantId: favoritedRestaurantList);
               },
             );
           } else {

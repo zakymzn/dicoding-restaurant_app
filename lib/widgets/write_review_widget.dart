@@ -54,14 +54,14 @@ class _WriteReviewWidgetState extends State<WriteReviewWidget> {
     });
   }
 
-  _showMyCustomToast(Color color, Icon icon, String text, ToastGravity gravity,
-      Duration duration) {
+  _showMyCustomToast(Color backgroundColor, Icon icon, String text,
+      Color textColor, ToastGravity gravity, Duration duration) {
     Widget toast = Container(
       width: 300,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25),
-        color: color,
+        color: backgroundColor,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -71,7 +71,12 @@ class _WriteReviewWidgetState extends State<WriteReviewWidget> {
             width: 10,
           ),
           Expanded(
-            child: Text(text),
+            child: Text(
+              text,
+              style: TextStyle(
+                color: textColor,
+              ),
+            ),
           ),
         ],
       ),
@@ -183,8 +188,9 @@ class _WriteReviewWidgetState extends State<WriteReviewWidget> {
                 } else {
                   _showMyCustomToast(
                     Colors.redAccent,
-                    const Icon(Icons.error, color: Colors.black),
+                    const Icon(Icons.error, color: Colors.white),
                     'Ulasan gagal dikirim\nPeriksa koneksi internet Anda',
+                    Colors.white,
                     ToastGravity.CENTER,
                     const Duration(seconds: 5),
                   );
@@ -197,6 +203,7 @@ class _WriteReviewWidgetState extends State<WriteReviewWidget> {
                     color: Colors.black,
                   ),
                   'Beri ulasan terlebih dahulu',
+                  Colors.black,
                   ToastGravity.CENTER,
                   const Duration(seconds: 5),
                 );
@@ -209,6 +216,7 @@ class _WriteReviewWidgetState extends State<WriteReviewWidget> {
                   color: Colors.black,
                 ),
                 'Kolom nama dan ulasan tidak boleh kosong',
+                Colors.black,
                 ToastGravity.CENTER,
                 const Duration(seconds: 5),
               );

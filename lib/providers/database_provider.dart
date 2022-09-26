@@ -44,6 +44,7 @@ class DatabaseProvider extends ChangeNotifier {
   void removeFavorite(String id) async {
     try {
       await databaseHelper.removeFavorited(id);
+      _getFavorite();
     } catch (e) {
       _state = ResultState.error;
       _message = 'Error: $e';

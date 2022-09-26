@@ -6,7 +6,7 @@ import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
 import 'package:dicoding_restaurant_app/pages/detail_page.dart';
 import 'package:provider/provider.dart';
 
-class MobileDetailPageWidget extends StatelessWidget {
+class MobileDetailPageWidget extends StatefulWidget {
   final Restaurant restaurantDetail;
 
   MobileDetailPageWidget({
@@ -14,6 +14,11 @@ class MobileDetailPageWidget extends StatelessWidget {
     required this.restaurantDetail,
   });
 
+  @override
+  State<MobileDetailPageWidget> createState() => _MobileDetailPageWidgetState();
+}
+
+class _MobileDetailPageWidgetState extends State<MobileDetailPageWidget> {
   final scrollController = ScrollController();
 
   @override
@@ -23,10 +28,10 @@ class MobileDetailPageWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Hero(
-            tag: restaurantDetail.id!,
+            tag: widget.restaurantDetail.id!,
             child: Image(
               image: NetworkImage(
-                RestaurantAPI().largeImage(restaurantDetail.pictureId!),
+                RestaurantAPI().largeImage(widget.restaurantDetail.pictureId!),
               ),
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) {
@@ -53,7 +58,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      restaurantDetail.name!,
+                      widget.restaurantDetail.name!,
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -61,19 +66,26 @@ class MobileDetailPageWidget extends StatelessWidget {
                     ),
                     Consumer<DatabaseProvider>(
                       builder: (context, provider, child) => FutureBuilder(
-                        future: provider.isFavorited(restaurantDetail.id!),
+                        future:
+                            provider.isFavorited(widget.restaurantDetail.id!),
                         builder: (context, snapshot) {
                           var isFavorited = snapshot.data ?? false;
                           if (isFavorited == true) {
                             return IconButton(
-                              onPressed: () =>
-                                  provider.removeFavorite(restaurantDetail.id!),
+                              onPressed: () {
+                                provider.removeFavorite(
+                                    widget.restaurantDetail.id!);
+                                setState(() {});
+                              },
                               icon: Icon(Icons.favorite),
                             );
                           } else {
                             return IconButton(
-                              onPressed: () =>
-                                  provider.addFavorite(restaurantDetail.id!),
+                              onPressed: () {
+                                provider
+                                    .addFavorite(widget.restaurantDetail.id!);
+                                setState(() {});
+                              },
                               icon: Icon(Icons.favorite_border),
                             );
                           }
@@ -94,14 +106,14 @@ class MobileDetailPageWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            restaurantDetail.city!,
+                            widget.restaurantDetail.city!,
                             style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            restaurantDetail.address!,
+                            widget.restaurantDetail.address!,
                             style: const TextStyle(
                               fontSize: 14,
                             ),
@@ -143,7 +155,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                               width: 5,
                             ),
                             Text(
-                              restaurantDetail.rating.toString(),
+                              widget.restaurantDetail.rating.toString(),
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -186,10 +198,11 @@ class MobileDetailPageWidget extends StatelessWidget {
                               child: ListView.builder(
                                 controller: scrollController,
                                 scrollDirection: Axis.horizontal,
-                                itemCount: restaurantDetail.categories!.length,
+                                itemCount:
+                                    widget.restaurantDetail.categories!.length,
                                 itemBuilder: (context, index) {
-                                  final categories =
-                                      restaurantDetail.categories![index];
+                                  final categories = widget
+                                      .restaurantDetail.categories![index];
                                   return Padding(
                                     padding: const EdgeInsets.all(5),
                                     child: ClipRRect(
@@ -243,7 +256,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                             height: 10,
                           ),
                           Text(
-                            restaurantDetail.description!,
+                            widget.restaurantDetail.description!,
                             textAlign: TextAlign.justify,
                             style: const TextStyle(fontSize: 14),
                           ),
@@ -291,7 +304,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                               child: ListView(
                                 controller: scrollController,
                                 scrollDirection: Axis.horizontal,
-                                children: restaurantDetail.menus!.foods
+                                children: widget.restaurantDetail.menus!.foods
                                     .map((foodMenu) {
                                   return Padding(
                                     padding: const EdgeInsets.all(5),
@@ -340,7 +353,7 @@ class MobileDetailPageWidget extends StatelessWidget {
                               child: ListView(
                                 controller: scrollController,
                                 scrollDirection: Axis.horizontal,
-                                children: restaurantDetail.menus!.drinks
+                                children: widget.restaurantDetail.menus!.drinks
                                     .map((drinkMenu) {
                                   return Padding(
                                     padding: const EdgeInsets.all(5),
@@ -398,10 +411,11 @@ class MobileDetailPageWidget extends StatelessWidget {
                           ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: restaurantDetail.customerReviews!.length,
+                            itemCount:
+                                widget.restaurantDetail.customerReviews!.length,
                             itemBuilder: (context, index) {
-                              final review =
-                                  restaurantDetail.customerReviews![index];
+                              final review = widget
+                                  .restaurantDetail.customerReviews![index];
                               return Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 5),

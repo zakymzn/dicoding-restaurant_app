@@ -2,8 +2,8 @@ import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:dicoding_restaurant_app/db/database_helper.dart';
 import 'package:dicoding_restaurant_app/pages/profile_page.dart';
+import 'package:dicoding_restaurant_app/providers/bottom_navigation_bar_provider.dart';
 import 'package:dicoding_restaurant_app/providers/database_provider.dart';
-import 'package:dicoding_restaurant_app/providers/favorite_button_provider.dart';
 import 'package:dicoding_restaurant_app/providers/restaurant_list_provider.dart';
 import 'package:dicoding_restaurant_app/providers/restaurant_search_provider.dart';
 import 'package:dicoding_restaurant_app/providers/scheduling_provider.dart';
@@ -41,8 +41,8 @@ class RestaurantApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<FavoriteButtonProvider>(
-          create: (context) => FavoriteButtonProvider(),
+        ChangeNotifierProvider<BottomNavigationBarProvider>(
+          create: (context) => BottomNavigationBarProvider(),
         ),
         ChangeNotifierProvider<RestaurantListProvider>(
           create: (context) => RestaurantListProvider(

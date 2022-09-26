@@ -1,34 +1,40 @@
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
+import 'package:dicoding_restaurant_app/pages/main_page.dart';
 import 'package:dicoding_restaurant_app/providers/database_provider.dart';
 import 'package:dicoding_restaurant_app/providers/restaurant_detail_provider.dart';
 import 'package:dicoding_restaurant_app/pages/detail_page.dart';
 import 'package:dicoding_restaurant_app/utility/result_state.dart';
 import 'package:dicoding_restaurant_app/utility/scroll_configuration.dart';
+import 'package:dicoding_restaurant_app/widgets/delete_from_favorite_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:provider/provider.dart';
 
-class FavoriteRestaurantWidget extends StatelessWidget {
-  final String favoritedRestaurantid;
+class FavoriteRestaurantWidget extends StatefulWidget {
+  final String favoritedRestaurantId;
 
-  FavoriteRestaurantWidget({super.key, required this.favoritedRestaurantid});
+  FavoriteRestaurantWidget({super.key, required this.favoritedRestaurantId});
 
+  @override
+  State<FavoriteRestaurantWidget> createState() =>
+      _FavoriteRestaurantWidgetState();
+}
+
+class _FavoriteRestaurantWidgetState extends State<FavoriteRestaurantWidget> {
   final scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    print('Lebar layar : ${MediaQuery.of(context).size.width}');
-    print('Tinggi layar : ${MediaQuery.of(context).size.height}');
     return Consumer<DatabaseProvider>(
       builder: (context, provider, child) => FutureBuilder(
-        future: provider.isFavorited(favoritedRestaurantid),
+        future: provider.isFavorited(widget.favoritedRestaurantId),
         builder: (context, snapshot) {
           var isFavorited = snapshot.data ?? false;
           return ChangeNotifierProvider<RestaurantDetailProvider>(
             create: (context) => RestaurantDetailProvider(
               restaurantAPI: RestaurantAPI(),
-              id: favoritedRestaurantid,
+              id: widget.favoritedRestaurantId,
             ),
             child: Consumer<RestaurantDetailProvider>(
                 builder: (context, state, child) {
@@ -55,8 +61,16 @@ class FavoriteRestaurantWidget extends StatelessWidget {
                   onTap: () => Navigator.pushNamed(
                     context,
                     DetailPage.route,
-                    arguments: favoritedRestaurantid,
+                    arguments: widget.favoritedRestaurantId,
                   ),
+                  onLongPress: () async {
+                    await showDialog(
+                      context: context,
+                      builder: (context) => DeleteFromFavoriteDialogWidget(
+                          provider: provider,
+                          favoritedRestaurantId: widget.favoritedRestaurantId),
+                    );
+                  },
                   child: Padding(
                     padding: const EdgeInsets.all(5),
                     child: ClipRRect(
@@ -67,7 +81,7 @@ class FavoriteRestaurantWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Hero(
-                              tag: favoritedRestaurantid,
+                              tag: widget.favoritedRestaurantId,
                               child: Image(
                                 image: NetworkImage(
                                   RestaurantAPI().smallImage(
@@ -172,16 +186,26 @@ class FavoriteRestaurantWidget extends StatelessWidget {
                                       builder: (context) {
                                         if (isFavorited == true) {
                                           return IconButton(
-                                            onPressed: () =>
-                                                provider.removeFavorite(
-                                                    favoritedRestaurantid),
+                                            onPressed: () async {
+                                              await showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      DeleteFromFavoriteDialogWidget(
+                                                        provider: provider,
+                                                        favoritedRestaurantId:
+                                                            widget
+                                                                .favoritedRestaurantId,
+                                                      ));
+                                            },
                                             icon: Icon(Icons.favorite),
                                           );
                                         } else {
                                           return IconButton(
-                                            onPressed: () =>
-                                                provider.addFavorite(
-                                                    favoritedRestaurantid),
+                                            onPressed: () {
+                                              provider.addFavorite(
+                                                  widget.favoritedRestaurantId);
+                                              setState(() {});
+                                            },
                                             icon: Icon(Icons.favorite_border),
                                           );
                                         }

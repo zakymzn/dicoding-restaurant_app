@@ -1,5 +1,5 @@
-import 'package:dicoding_restaurant_app/pages/mobile/mobile_restaurant_list_widget.dart';
-import 'package:dicoding_restaurant_app/pages/web_desktop/web_desktop_restaurant_list_widget.dart';
+import 'package:dicoding_restaurant_app/widgets/mobile_restaurant_list_widget.dart';
+import 'package:dicoding_restaurant_app/widgets/web_desktop_restaurant_list_widget.dart';
 import 'package:dicoding_restaurant_app/utility/result_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
