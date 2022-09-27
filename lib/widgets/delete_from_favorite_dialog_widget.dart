@@ -3,7 +3,7 @@ import 'package:dicoding_restaurant_app/providers/database_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class DeleteFromFavoriteDialogWidget extends StatelessWidget {
+class DeleteFromFavoriteDialogWidget extends StatefulWidget {
   DatabaseProvider provider;
   String favoritedRestaurantId;
 
@@ -13,6 +13,13 @@ class DeleteFromFavoriteDialogWidget extends StatelessWidget {
     required this.favoritedRestaurantId,
   });
 
+  @override
+  State<DeleteFromFavoriteDialogWidget> createState() =>
+      _DeleteFromFavoriteDialogWidgetState();
+}
+
+class _DeleteFromFavoriteDialogWidgetState
+    extends State<DeleteFromFavoriteDialogWidget> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -30,7 +37,8 @@ class DeleteFromFavoriteDialogWidget extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            provider.removeFavorite(favoritedRestaurantId);
+            widget.provider.removeFavorite(widget.favoritedRestaurantId);
+            Navigator.pop(context);
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(

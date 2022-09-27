@@ -1,5 +1,6 @@
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:dicoding_restaurant_app/pages/detail_page.dart';
+import 'package:dicoding_restaurant_app/pages/main_page.dart';
 import 'package:dicoding_restaurant_app/providers/database_provider.dart';
 import 'package:dicoding_restaurant_app/providers/restaurant_detail_provider.dart';
 import 'package:dicoding_restaurant_app/utility/result_state.dart';
@@ -34,15 +35,25 @@ class FavoriteRestaurantPage extends StatelessWidget {
       body: Consumer<DatabaseProvider>(
         builder: (context, provider, child) {
           if (provider.state == ResultState.hasData) {
-            return MasonryGridView.builder(
-              gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2),
-              itemCount: provider.favorited.length,
-              itemBuilder: (context, index) {
-                var favoritedRestaurantList = provider.favorited[index];
-                return FavoriteRestaurantWidget(
-                    favoritedRestaurantId: favoritedRestaurantList);
+            return RefreshIndicator(
+              onRefresh: () {
+                return Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MainPage(),
+                    ));
               },
+              child: MasonryGridView.builder(
+                gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
+                padding: EdgeInsets.all(5),
+                itemCount: provider.favorited.length,
+                itemBuilder: (context, index) {
+                  var favoritedRestaurantList = provider.favorited[index];
+                  return FavoriteRestaurantWidget(
+                      favoritedRestaurantId: favoritedRestaurantList);
+                },
+              ),
             );
           } else {
             return Column(

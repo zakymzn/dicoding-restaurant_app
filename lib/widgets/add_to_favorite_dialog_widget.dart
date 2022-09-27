@@ -92,7 +92,7 @@ class _AddToFavoriteDialogWidgetState extends State<AddToFavoriteDialogWidget> {
                 'Restorant ini sudah ditambahkan sebelumnya',
                 Colors.white,
                 ToastGravity.BOTTOM,
-                Duration(seconds: 5),
+                Duration(seconds: 3),
               );
             } else {
               widget.provider.addFavorite(widget.favoritedRestaurantId);

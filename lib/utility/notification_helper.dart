@@ -47,18 +47,11 @@ class NotificationHelper {
     return filePath;
   }
 
-  int randomizedValue(value) {
-    var randomValue = Random().nextInt(value);
-    print('randomValue = $randomValue');
-    return randomValue;
-  }
-
   Future<void> showNotification(
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
     var restaurantList = await RestaurantAPI().list();
     var randomRestaurant = restaurantList
-        .restaurants[randomizedValue(restaurantList.restaurants.length)];
-    print('randomRestaurant = $randomRestaurant');
+        .restaurants[Random().nextInt(restaurantList.restaurants.length)];
 
     var restaurantImage = await _downloadAndSaveFile(
         '${RestaurantAPI().largeImage(randomRestaurant.pictureId)}',
@@ -88,8 +81,8 @@ class NotificationHelper {
       priority: Priority.max,
       enableLights: true,
       enableVibration: true,
-      visibility: NotificationVisibility.public,
       playSound: true,
+      visibility: NotificationVisibility.public,
       sound: RawResourceAndroidNotificationSound(
           notificationSound.split('.').first),
       ticker: 'ticker',
@@ -114,8 +107,7 @@ class NotificationHelper {
     selectNotificationSubject.stream.listen((String payload) async {
       var data = RestaurantList.fromJson(json.decode(payload));
       var restaurant =
-          data.restaurants[randomizedValue(data.restaurants.length)];
-      print('restaurant = $restaurant');
+          data.restaurants[Random().nextInt(data.restaurants.length)];
       Navigator.pushNamed(context, route, arguments: restaurant.id);
     });
   }
