@@ -97,18 +97,14 @@ class NotificationHelper {
       'Ada rekomendasi restoran untukmu',
       'Cek sekarang',
       platformChannelSpecifics,
-      payload: json.encode(
-        restaurantList.toJson(),
-      ),
+      payload: json.encode(randomRestaurant.toJson()),
     );
   }
 
   void configureSelectNotificationSubject(BuildContext context, String route) {
     selectNotificationSubject.stream.listen((String payload) async {
-      var data = RestaurantList.fromJson(json.decode(payload));
-      var restaurant =
-          data.restaurants[Random().nextInt(data.restaurants.length)];
-      Navigator.pushNamed(context, route, arguments: restaurant.id);
+      var data = Restaurant.fromJson(json.decode(payload));
+      Navigator.pushNamed(context, route, arguments: data.id);
     });
   }
 }
