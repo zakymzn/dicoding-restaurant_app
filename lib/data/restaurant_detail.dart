@@ -147,3 +147,24 @@ class Menus {
         "drinks": List<dynamic>.from(drinks.map((x) => x.toJson())),
       };
 }
+
+class RestaurantDetailNotFound {
+  RestaurantDetailNotFound({
+    required this.error,
+    required this.message,
+  });
+
+  bool error;
+  String message;
+
+  factory RestaurantDetailNotFound.fromJson(Map<String, dynamic> json) =>
+      RestaurantDetailNotFound(
+        error: json["error"],
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "error": error,
+        "message": message,
+      };
+}

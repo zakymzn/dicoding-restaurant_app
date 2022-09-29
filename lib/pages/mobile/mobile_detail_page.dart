@@ -3,13 +3,12 @@ import 'package:dicoding_restaurant_app/providers/database_provider.dart';
 import 'package:dicoding_restaurant_app/utility/scroll_configuration.dart';
 import 'package:flutter/material.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_detail.dart';
-import 'package:dicoding_restaurant_app/pages/detail_page.dart';
 import 'package:provider/provider.dart';
 
 class MobileDetailPageWidget extends StatefulWidget {
   final Restaurant restaurantDetail;
 
-  MobileDetailPageWidget({
+  const MobileDetailPageWidget({
     super.key,
     required this.restaurantDetail,
   });
@@ -77,7 +76,7 @@ class _MobileDetailPageWidgetState extends State<MobileDetailPageWidget> {
                                     widget.restaurantDetail.id!);
                                 setState(() {});
                               },
-                              icon: Icon(Icons.favorite),
+                              icon: const Icon(Icons.favorite),
                             );
                           } else {
                             return IconButton(
@@ -86,7 +85,7 @@ class _MobileDetailPageWidgetState extends State<MobileDetailPageWidget> {
                                     .addFavorite(widget.restaurantDetail.id!);
                                 setState(() {});
                               },
-                              icon: Icon(Icons.favorite_border),
+                              icon: const Icon(Icons.favorite_border),
                             );
                           }
                         },

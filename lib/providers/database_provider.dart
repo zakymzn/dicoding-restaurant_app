@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/foundation.dart';
 import 'package:dicoding_restaurant_app/db/database_helper.dart';
 import 'package:dicoding_restaurant_app/utility/result_state.dart';

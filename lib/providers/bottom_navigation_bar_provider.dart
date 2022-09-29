@@ -8,10 +8,10 @@ class BottomNavigationBarProvider extends ChangeNotifier {
   int currentIndex = 0;
 
   final List<Widget> pages = [
-    RestaurantListPage(),
-    SearchPage(),
-    FavoriteRestaurantPage(),
-    SettingsPage(),
+    const RestaurantListPage(),
+    const SearchPage(),
+    const FavoriteRestaurantPage(),
+    const SettingsPage(),
   ];
 
   currentPageIndex(int page) {

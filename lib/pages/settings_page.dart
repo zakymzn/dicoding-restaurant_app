@@ -1,8 +1,5 @@
-import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:dicoding_restaurant_app/data/profile_data.dart';
-import 'package:dicoding_restaurant_app/data/restaurant_list.dart';
 import 'package:dicoding_restaurant_app/main.dart';
-import 'package:dicoding_restaurant_app/pages/main_page.dart';
 import 'package:dicoding_restaurant_app/pages/profile_page.dart';
 import 'package:dicoding_restaurant_app/providers/scheduling_provider.dart';
 import 'package:dicoding_restaurant_app/providers/settings_provider.dart';
@@ -12,7 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class SettingsPage extends StatelessWidget {
-  SettingsPage({super.key});
+  const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -85,12 +82,12 @@ class SettingsPage extends StatelessWidget {
           Consumer<SettingsProvider>(
             builder: (context, provider, child) {
               return ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.notifications,
                   color: Colors.brown,
                   size: 30,
                 ),
-                title: Text(
+                title: const Text(
                   'Notifikasi rekomendasi restoran',
                   style: TextStyle(
                     fontSize: 16,
@@ -124,7 +121,7 @@ class SettingsPage extends StatelessWidget {
                 await NotificationHelper()
                     .showNotification(flutterLocalNotificationsPlugin);
               },
-              child: Text('Tampilkan notifikasi sekarang juga!'),
+              child: const Text('Tampilkan notifikasi sekarang juga!'),
             ),
           ),
         ],

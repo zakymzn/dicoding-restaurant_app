@@ -3,6 +3,7 @@ import 'package:dicoding_restaurant_app/data/restaurant_list.dart';
 import 'package:dicoding_restaurant_app/utility/result_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class RestaurantListProvider extends ChangeNotifier {
   final RestaurantAPI restaurantAPI;
@@ -23,7 +24,7 @@ class RestaurantListProvider extends ChangeNotifier {
     try {
       _state = ResultState.loading;
       notifyListeners();
-      final restaurant = await restaurantAPI.list();
+      final restaurant = await restaurantAPI.list(http.Client());
       if (restaurant.restaurants.isEmpty) {
         _state = ResultState.noData;
         notifyListeners();

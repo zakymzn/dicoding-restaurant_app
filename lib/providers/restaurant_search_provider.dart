@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
 import 'package:dicoding_restaurant_app/data/restaurant_search.dart';
 import 'package:dicoding_restaurant_app/utility/result_state.dart';
+import 'package:http/http.dart' as http;
 
 class RestaurantSearchProvider extends ChangeNotifier {
   final RestaurantAPI restaurantAPI;
@@ -32,7 +33,7 @@ class RestaurantSearchProvider extends ChangeNotifier {
     try {
       _state = ResultState.loading;
       notifyListeners();
-      final restaurant = await restaurantAPI.search(value);
+      final restaurant = await restaurantAPI.search(value, http.Client());
       if (restaurant.restaurants.isEmpty) {
         _state = ResultState.noData;
         notifyListeners();

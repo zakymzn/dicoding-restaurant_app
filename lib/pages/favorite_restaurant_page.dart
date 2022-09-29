@@ -1,8 +1,5 @@
-import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
-import 'package:dicoding_restaurant_app/pages/detail_page.dart';
 import 'package:dicoding_restaurant_app/pages/main_page.dart';
 import 'package:dicoding_restaurant_app/providers/database_provider.dart';
-import 'package:dicoding_restaurant_app/providers/restaurant_detail_provider.dart';
 import 'package:dicoding_restaurant_app/utility/result_state.dart';
 import 'package:dicoding_restaurant_app/widgets/favorited_restaurant_widget.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +7,14 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:provider/provider.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class FavoriteRestaurantPage extends StatelessWidget {
+class FavoriteRestaurantPage extends StatefulWidget {
   const FavoriteRestaurantPage({super.key});
 
+  @override
+  State<FavoriteRestaurantPage> createState() => _FavoriteRestaurantPageState();
+}
+
+class _FavoriteRestaurantPageState extends State<FavoriteRestaurantPage> {
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(
@@ -23,11 +25,11 @@ class FavoriteRestaurantPage extends StatelessWidget {
             expandedHeight: 200,
             elevation: 2,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text('Restoran Favorit'),
+              title: const Text('Restoran Favorit'),
               background: Container(
                 color: Colors.brown.shade200,
               ),
-              titlePadding: EdgeInsets.fromLTRB(20, 0, 0, 20),
+              titlePadding: const EdgeInsets.fromLTRB(20, 0, 0, 20),
             ),
           ),
         ];
@@ -40,13 +42,14 @@ class FavoriteRestaurantPage extends StatelessWidget {
                 return Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MainPage(),
+                      builder: (context) => const MainPage(),
                     ));
               },
               child: MasonryGridView.builder(
-                gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
-                padding: EdgeInsets.all(5),
+                gridDelegate:
+                    const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2),
+                padding: const EdgeInsets.all(5),
                 itemCount: provider.favorited.length,
                 itemBuilder: (context, index) {
                   var favoritedRestaurantList = provider.favorited[index];
@@ -59,7 +62,7 @@ class FavoriteRestaurantPage extends StatelessWidget {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+              children: const [
                 Icon(
                   MdiIcons.food,
                   size: 75,

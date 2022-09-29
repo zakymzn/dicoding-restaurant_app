@@ -49,7 +49,7 @@ class NotificationHelper {
 
   Future<void> showNotification(
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
-    var restaurantList = await RestaurantAPI().list();
+    var restaurantList = await RestaurantAPI().list(http.Client());
     var randomRestaurant = restaurantList
         .restaurants[Random().nextInt(restaurantList.restaurants.length)];
 

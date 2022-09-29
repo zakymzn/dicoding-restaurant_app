@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
@@ -14,7 +12,6 @@ class DatabaseHelper {
 
   static const String _tableFavoritedRestaurant = 'favorited_restaurant';
   final String _columnRestaurantId = 'id';
-  // final String _columnIsFavorited = 'isFavorited';
 
   Future<Database> _initializeDb() async {
     var path = await getDatabasesPath();

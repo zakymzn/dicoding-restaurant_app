@@ -2,16 +2,12 @@ import 'dart:async';
 import 'dart:developer' as developer;
 import 'package:dicoding_restaurant_app/main.dart';
 import 'package:dicoding_restaurant_app/pages/detail_page.dart';
-import 'package:dicoding_restaurant_app/pages/favorite_restaurant_page.dart';
-import 'package:dicoding_restaurant_app/pages/list_page.dart';
-import 'package:dicoding_restaurant_app/pages/settings_page.dart';
 import 'package:dicoding_restaurant_app/providers/bottom_navigation_bar_provider.dart';
 import 'package:dicoding_restaurant_app/utility/notification_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dicoding_restaurant_app/pages/network_disconnected_page.dart';
-import 'package:dicoding_restaurant_app/pages/search_page.dart';
 import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
@@ -56,6 +52,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     initConnectivity();
+    _notificationHelper.initNotifications(flutterLocalNotificationsPlugin);
     _notificationHelper.configureSelectNotificationSubject(
         context, DetailPage.route);
     subscription = Connectivity().onConnectivityChanged.listen((event) {
@@ -81,12 +78,12 @@ class _MainPageState extends State<MainPage> {
           bottomNavigationBar: NavigationBarTheme(
             data: NavigationBarThemeData(
               indicatorColor: Colors.brown.shade100,
-              iconTheme: MaterialStatePropertyAll(
+              iconTheme: const MaterialStatePropertyAll(
                 IconThemeData(
                   color: Colors.white,
                 ),
               ),
-              labelTextStyle: MaterialStatePropertyAll(
+              labelTextStyle: const MaterialStatePropertyAll(
                 TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -98,10 +95,10 @@ class _MainPageState extends State<MainPage> {
               onDestinationSelected: (index) {
                 page.currentPageIndex(index);
               },
-              animationDuration: Duration(milliseconds: 500),
+              animationDuration: const Duration(milliseconds: 500),
               selectedIndex: page.currentIndex,
               backgroundColor: Colors.brown.shade300,
-              destinations: [
+              destinations: const [
                 NavigationDestination(
                   icon: Icon(Icons.home_outlined),
                   selectedIcon: Icon(
@@ -140,7 +137,7 @@ class _MainPageState extends State<MainPage> {
         ),
       );
     } else {
-      return NetworkDisconnectedPage();
+      return const NetworkDisconnectedPage();
     }
   }
 }

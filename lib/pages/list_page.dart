@@ -7,14 +7,9 @@ import 'package:dicoding_restaurant_app/data/restaurant_list.dart';
 import 'package:dicoding_restaurant_app/pages/detail_page.dart';
 import 'package:dicoding_restaurant_app/providers/restaurant_list_provider.dart';
 
-class RestaurantListPage extends StatefulWidget {
+class RestaurantListPage extends StatelessWidget {
   const RestaurantListPage({super.key});
 
-  @override
-  State<RestaurantListPage> createState() => _RestaurantListPageState();
-}
-
-class _RestaurantListPageState extends State<RestaurantListPage> {
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(

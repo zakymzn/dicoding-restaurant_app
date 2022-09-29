@@ -1,20 +1,17 @@
 import 'package:dicoding_restaurant_app/api/restaurant_api.dart';
-import 'package:dicoding_restaurant_app/pages/main_page.dart';
 import 'package:dicoding_restaurant_app/providers/database_provider.dart';
 import 'package:dicoding_restaurant_app/providers/restaurant_detail_provider.dart';
 import 'package:dicoding_restaurant_app/pages/detail_page.dart';
 import 'package:dicoding_restaurant_app/utility/result_state.dart';
-import 'package:dicoding_restaurant_app/utility/scroll_configuration.dart';
 import 'package:dicoding_restaurant_app/widgets/delete_from_favorite_dialog_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/container.dart';
 import 'package:provider/provider.dart';
 
 class FavoriteRestaurantWidget extends StatelessWidget {
   final String favoritedRestaurantId;
 
-  FavoriteRestaurantWidget({super.key, required this.favoritedRestaurantId});
+  const FavoriteRestaurantWidget(
+      {super.key, required this.favoritedRestaurantId});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +35,7 @@ class FavoriteRestaurantWidget extends StatelessWidget {
                     child: Container(
                       color: Colors.brown.shade200,
                       height: 300,
-                      child: Center(
+                      child: const Center(
                         child: CircularProgressIndicator(),
                       ),
                     ),
@@ -76,8 +73,8 @@ class FavoriteRestaurantWidget extends StatelessWidget {
                                   if (loadingProgress == null) {
                                     return child;
                                   } else {
-                                    return SizedBox(
-                                      width: 100,
+                                    return const SizedBox(
+                                      height: 100,
                                       child: Center(
                                         child: CircularProgressIndicator(),
                                       ),
@@ -93,14 +90,14 @@ class FavoriteRestaurantWidget extends StatelessWidget {
                                 children: [
                                   Text(
                                     state.detail.restaurant.name!,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   Row(
                                     children: [
-                                      Padding(
+                                      const Padding(
                                         padding: EdgeInsets.only(right: 5),
                                         child: Icon(
                                           Icons.place,
@@ -110,7 +107,7 @@ class FavoriteRestaurantWidget extends StatelessWidget {
                                       ),
                                       Text(
                                         state.detail.restaurant.city!,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -118,7 +115,7 @@ class FavoriteRestaurantWidget extends StatelessWidget {
                                     ],
                                   ),
                                   Container(
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                       horizontal: 5,
                                       vertical: 2.5,
                                     ),
@@ -128,18 +125,18 @@ class FavoriteRestaurantWidget extends StatelessWidget {
                                     ),
                                     child: Row(
                                       children: [
-                                        Icon(
+                                        const Icon(
                                           Icons.star,
                                           color: Colors.orangeAccent,
                                           size: 14,
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 5,
                                         ),
                                         Text(
                                           state.detail.restaurant.rating
                                               .toString(),
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -148,7 +145,7 @@ class FavoriteRestaurantWidget extends StatelessWidget {
                                           color: Colors.brown,
                                           width: 1.5,
                                           height: 15,
-                                          margin: EdgeInsets.symmetric(
+                                          margin: const EdgeInsets.symmetric(
                                               horizontal: 5),
                                         ),
                                         Text(
@@ -158,14 +155,14 @@ class FavoriteRestaurantWidget extends StatelessWidget {
                                   ),
                                   Text(
                                     'Menu makanan (${state.detail.restaurant.menus!.foods.length})',
-                                    style: TextStyle(fontSize: 12),
+                                    style: const TextStyle(fontSize: 12),
                                   ),
                                   Text(
                                     'Menu minuman (${state.detail.restaurant.menus!.drinks.length})',
-                                    style: TextStyle(fontSize: 12),
+                                    style: const TextStyle(fontSize: 12),
                                   ),
                                   Align(
-                                    alignment: Alignment(1, 0),
+                                    alignment: const Alignment(1, 0),
                                     child: Builder(
                                       builder: (context) {
                                         if (isFavorited == true) {
@@ -175,14 +172,16 @@ class FavoriteRestaurantWidget extends StatelessWidget {
                                                 context: context,
                                                 builder: (context) {
                                                   return DeleteFromFavoriteDialogWidget(
-                                                    provider: provider,
+                                                    databaseProvider: provider,
                                                     favoritedRestaurantId:
                                                         favoritedRestaurantId,
+                                                    restaurantDetailProvider:
+                                                        state,
                                                   );
                                                 },
                                               );
                                             },
-                                            icon: Icon(Icons.favorite),
+                                            icon: const Icon(Icons.favorite),
                                           );
                                         } else {
                                           return IconButton(
@@ -190,7 +189,8 @@ class FavoriteRestaurantWidget extends StatelessWidget {
                                               provider.addFavorite(
                                                   favoritedRestaurantId);
                                             },
-                                            icon: Icon(Icons.favorite_border),
+                                            icon: const Icon(
+                                                Icons.favorite_border),
                                           );
                                         }
                                       },

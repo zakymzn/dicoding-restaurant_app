@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class AddToFavoriteDialogWidget extends StatefulWidget {
-  DatabaseProvider provider;
-  String favoritedRestaurantId;
-  bool isFavorited;
+  final DatabaseProvider provider;
+  final String favoritedRestaurantId;
+  final bool isFavorited;
 
-  AddToFavoriteDialogWidget({
+  const AddToFavoriteDialogWidget({
     super.key,
     required this.provider,
     required this.favoritedRestaurantId,
@@ -70,14 +70,14 @@ class _AddToFavoriteDialogWidgetState extends State<AddToFavoriteDialogWidget> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25),
       ),
-      content: Text(
+      content: const Text(
         'Tambahkan restoran ini ke daftar favorit?',
         textAlign: TextAlign.center,
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('TIDAK'),
+          child: const Text('TIDAK'),
         ),
         TextButton(
           onPressed: () {
@@ -92,7 +92,7 @@ class _AddToFavoriteDialogWidgetState extends State<AddToFavoriteDialogWidget> {
                 'Restorant ini sudah ditambahkan sebelumnya',
                 Colors.white,
                 ToastGravity.BOTTOM,
-                Duration(seconds: 3),
+                const Duration(seconds: 3),
               );
             } else {
               widget.provider.addFavorite(widget.favoritedRestaurantId);
@@ -105,7 +105,7 @@ class _AddToFavoriteDialogWidgetState extends State<AddToFavoriteDialogWidget> {
               );
             }
           },
-          child: Text('YA'),
+          child: const Text('YA'),
         ),
       ],
     );
