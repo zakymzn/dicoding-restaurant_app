@@ -115,15 +115,6 @@ class SettingsPage extends StatelessWidget {
               );
             },
           ),
-          Center(
-            child: ElevatedButton(
-              onPressed: () async {
-                await NotificationHelper()
-                    .showNotification(flutterLocalNotificationsPlugin);
-              },
-              child: const Text('Tampilkan notifikasi sekarang juga!'),
-            ),
-          ),
         ],
       ),
     );

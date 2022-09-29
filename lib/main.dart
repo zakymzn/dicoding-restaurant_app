@@ -57,7 +57,7 @@ class RestaurantApp extends StatelessWidget {
         ChangeNotifierProvider<SettingsProvider>(
           create: (context) => SettingsProvider(),
         ),
-        ChangeNotifierProvider(
+        ChangeNotifierProvider<DatabaseProvider>(
           create: (context) =>
               DatabaseProvider(databaseHelper: DatabaseHelper()),
         ),
