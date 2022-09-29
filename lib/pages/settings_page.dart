@@ -1,9 +1,7 @@
 import 'package:dicoding_restaurant_app/data/profile_data.dart';
-import 'package:dicoding_restaurant_app/main.dart';
 import 'package:dicoding_restaurant_app/pages/profile_page.dart';
 import 'package:dicoding_restaurant_app/providers/scheduling_provider.dart';
 import 'package:dicoding_restaurant_app/providers/settings_provider.dart';
-import 'package:dicoding_restaurant_app/utility/notification_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
