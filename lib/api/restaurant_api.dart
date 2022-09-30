@@ -9,7 +9,7 @@ class RestaurantAPI {
   final String baseUrl = 'https://restaurant-api.dicoding.dev';
   final String listUrl = '/list';
   final String detailUrl = '/detail/';
-  final String searchUrl = '/searchq=';
+  final String searchUrl = '/search?q=';
   final String reviewUrl = '/review';
   final String headers = 'application/x-www-form-urlencoded';
   final String smallImageUrl = '/images/small/';
